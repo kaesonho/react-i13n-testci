@@ -1,9 +1,0 @@
-/artifacts/
-/coverage/
-/dist/
-/node_modules/
-/protractor-batch-artifacts/
-/results/
-/tests/file_server/build/
-npm-*.log
-*.tap
