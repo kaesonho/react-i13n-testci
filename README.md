@@ -1,5 +1,5 @@
 # react-i13n
-[![Build Status](http://api.screwdriver.corp.yahoo.com:4080/badge/36725/component/icon)](http://api.screwdriver.corp.yahoo.com:4080/badge/36725/component/target)
+[![ynpm](http://ynpm-search.corp.yahoo.com/-/icon/react-i13n/latest)](http://ynpm-search.corp.yahoo.com/-/package/react-i13n) [![Build Status](http://api.screwdriver.corp.yahoo.com:4080/badge/36725/component/icon)](http://api.screwdriver.corp.yahoo.com:4080/badge/36725/component/target)
 
 React I13n provides a performant and scalable approach to instrumentation.
 
