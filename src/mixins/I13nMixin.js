@@ -6,7 +6,7 @@ var ReactI13n = require('../libs/ReactI13n');
 var clickHandler = require('../utils/clickHandler');
 var EventListener = require('react/lib/EventListener');
 var ViewportMixin = require('../vendors/ViewportMixin');
-var showDebugDashboard = require('../utils/showDebugDashboard');
+var DebugDashboard = require('../utils/DebugDashboard');
 require('setimmediate');
 var IS_DEBUG_MODE = isDebugMode();
 
@@ -102,7 +102,7 @@ var I13nMixin = {
 
         if (IS_DEBUG_MODE) {
             setImmediate(function asyncShowDebugDashboard() {
-                self._debugDashboard = showDebugDashboard(self._i13nNode); 
+                self._debugDashboard = new DebugDashboard(self._i13nNode); 
             });
         }
         self._executeI13nEvent('created', {});

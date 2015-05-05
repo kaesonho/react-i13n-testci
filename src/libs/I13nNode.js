@@ -249,10 +249,15 @@ I13nNode.prototype.sortChildrenNodes = function sortChildrenNodes (propagate) {
     this._childrenNodes = this._childrenNodes.sort(function compareChildrenNodes(childA, childB) {
         var domA = childA.getDOMNode();
         var domB = childB.getDOMNode();
-        if (domA && domB && domB.compareDocumentPosition) {
-            var comparison = domB.compareDocumentPosition(domA);
-            if (comparison & Node.DOCUMENT_POSITION_PRECEDING) {
-                return -1;
+        if (domA && domB) {
+            if (domB.compareDocumentPosition) {
+                var comparison = domB.compareDocumentPosition(domA);
+                if (comparison & Node.DOCUMENT_POSITION_PRECEDING) {
+                    return -1;
+                }
+            } else if (domB.sourceIndex) {
+                // IE 8
+                return domA.sourceIndex - domB.sourceIndex;
             }
         }
         return 1;

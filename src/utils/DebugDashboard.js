@@ -1,3 +1,4 @@
+var EventListener = require('react/lib/EventListener');
 /* global document, window*/
 
 var uniqueId = 0;
@@ -18,9 +19,11 @@ function cumulativeOffset (element) {
 
 /**
  * create debug message board for the i13n node
- * @method showDebugDashboard
+ * @class DebugDashboard
+ * @param {Object} i13nNode the i13n node
+ * @constructor
  */
-module.exports = function showDebugDashboard (i13nNode) {
+var DebugDashboard = function DebugDashboard (i13nNode) {
     var domNode = i13nNode.getDOMNode();
     var container = document.createElement('div');
     container.id = 'i13n-debug-' + uniqueId;

@@ -37,7 +37,7 @@ function isFormSubmit (target) {
 }
 
 /**
- * clickHandler which integrate the beacon event, send out beacon event then redirect user to the distination. 
+ * clickHandler which integrate the beacon event, send out beacon event then redirect user to the destination. 
  * @param {Object} e the click event
  * @method ClickHandler
  */
