@@ -1,7 +1,7 @@
 {
   "name": "react-i13n",
   "description": "react i13n",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -22,7 +22,6 @@
     "lodash": "^3.1.0",
     "object-assign": "^2.0.0",
     "postal": "^1.0.2",
-    "react": "<= 0.13.x",
     "setimmediate": "^1.0.2"
   },
   "devDependencies": {
@@ -53,6 +52,7 @@
     "protractor-batch-runner": "^0.0.74",
     "protractor-reporter": "^0.2.0",
     "protractor-utils": "^0.3.4",
+    "react": "<= 0.13.x",
     "react-tools": "<= 0.13.x",
     "webpack": "^1.4.13",
     "xunit-file": "^0.0.5"
