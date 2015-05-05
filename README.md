@@ -15,7 +15,7 @@ It's originated from [fastbreak/crossover](https://git.corp.yahoo.com/fastbreak/
 `react-i13n` is pluggable to integrate any data analytics library into the same tree architecture. All that is needed is to implement the plugin and the handler functions which integrate with the libraries transport functions.
 
 ### I13n Tree
-![Instrumentation Tree](https://git.corp.yahoo.com/github-enterprise-assets/0000/1644/0003/9222/9c0041ce-eac3-11e4-9a5b-83f85b80c8fd.png)
+![Instrumentation Tree](https://git.corp.yahoo.com/github-enterprise-assets/0000/1644/0003/9712/5811235c-f2b1-11e4-9692-becb91d7336d.png)
 * `react-i13n` build the `I13n Tree` with `context` and life cycle event `componentWillMount`, we could define the `model` data we need. Which means we don't need addtional DOM manipulation when we want to get `model` values for sending out linkview/click beacon.
 * `model` could be a plain object or a dynamic function with a proper `model` object return, which means we could dynamically change `model` data without causing rerender due to the `props` changes.
 * Whenever we want to get the `model` for certain node, it traverses back to the root and merge all the `model` information in the path. Since the tree is already built and we don't need extra DOM access, it should be pretty cheap and efficient. 
