@@ -30,10 +30,11 @@ var Viewport = {
 
     _detectViewport: function () {
         var self = this;
-        if (!self.isMounted()) {
+        var DOMNode = self.getDOMNode();
+        if (!self.isMounted() || !DOMNode) {
             return;
         }
-        var rect = self.getDOMNode().getBoundingClientRect();
+        var rect = DOMNode.getBoundingClientRect();
         var viewportMargins = self.props.viewport.margins;
         var margins;
         if (viewportMargins.usePercent) {
