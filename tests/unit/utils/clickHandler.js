@@ -27,7 +27,9 @@ describe('clickHandler', function () {
                 button: 0
             }
             mockComponent = {
-                props: {}
+                props: {
+                    href: 'foo'
+                }
             };
             done();
         });
@@ -114,10 +116,10 @@ describe('clickHandler', function () {
         clickHandler.apply(mockComponent, [mockClickEvent]);
     });
     
-    it('should not follow it if nofollow is set', function (done) {
+    it('should not follow it if follow is set to false', function (done) {
         var i13nNode = new I13nNode(null, {});
         var executedActions = [];
-        mockComponent.props.nofollow = true;
+        mockComponent.props.follow = false;
         mockClickEvent.preventDefault = function () {
             executedActions.push('preventDefault');
         };
