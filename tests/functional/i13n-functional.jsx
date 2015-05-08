@@ -48,6 +48,9 @@ var I13nComponentLevel1 = React.createClass({
                 <div className="P(4px) M(4px) Bgc(#ececec) LinkWithHashUrl">
                     <I13nAnchor model={{sec:'foo'}} href="#">LinkWithHashUrl</I13nAnchor>
                 </div>
+                <div className="P(4px) M(4px) Bgc(#ececec) NormalLinkWithTargetBlank">
+                    <I13nAnchor target="_blank" className="NormalLink" model={{sec:'foo'}} href="./mock-destination-page.html">NormalLinkWithTargetBlank</I13nAnchor>
+                </div>
                 <div className="P(4px) M(4px) Bgc(#ececec) NormalLinkWithFollow">
                     <I13nAnchor model={{sec:'foo'}} href="./mock-destination-page.html">NormalLinkWithFollow</I13nAnchor>
                 </div>
@@ -195,5 +198,4 @@ I13nDemo = setupI13n(I13nDemo,
     },
     [testPlugin]
 );
-
 var Demo = React.render(<I13nDemo />, container);

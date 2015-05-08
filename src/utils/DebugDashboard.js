@@ -1,19 +1,35 @@
-var EventListener = require('react/lib/EventListener');
 /* global document, window*/
+var EventListener = require('react/lib/EventListener');
 
 var uniqueId = 0;
 
-function cumulativeOffset (element) {
+function setupContainerPosition (DOMNode, container, dashboard) {
+    var offset = cumulativeOffset(DOMNode);
+    var left = offset.left + DOMNode.offsetWidth - 15;
+    
+    container.style.position = 'absolute';
+    container.style['max-width'] = '300px';
+    container.style.top = offset.top + 'px';
+
+    // adjust layout if dashboard is out of the viewport
+    if (left + 305 > window.innerWidth) {
+        dashboard.style.left = (window.innerWidth - (left + 300) - 5) + 'px';
+    }
+
+    container.style.left = (offset.left + DOMNode.offsetWidth - 15) + 'px';
+    container.style['z-index'] = '10';
+}
+
+function cumulativeOffset (DOMNode) {
     var top = 0;
-    var left = 0;
+    var rect = DOMNode.getBoundingClientRect();
     do {
-        top += element.offsetTop  || 0;
-        left += element.offsetLeft || 0;
-        element = element.offsetParent;
-    } while (element);
+        top += DOMNode.offsetTop  || 0;
+        DOMNode = DOMNode.offsetParent;
+    } while (DOMNode);
     return {
         top: top,
-        left: left
+        left: rect.left
     };
 }
 
@@ -34,7 +50,6 @@ var DebugDashboard = function DebugDashboard (i13nNode) {
     var dashboard = document.createElement('div');
     var model = i13nNode.getMergedModel();
     var modelInfomation = '';
-    var offset = cumulativeOffset(DOMNode);
 
     // compose model data
     model.position = i13nNode.getPosition();
@@ -84,22 +99,10 @@ var DebugDashboard = function DebugDashboard (i13nNode) {
         DOMNode.style.border = null;
     });
 
-    // generate container
-    container.style.position = 'absolute';
-    container.style['max-width'] = '300px';
-    container.style.top = offset.top + 'px';
-    var left = offset.left + DOMNode.offsetWidth - 15;
-
-    // adjust layout if dashboard is out of the viewport
-    if (left + 305 > window.innerWidth) {
-        dashboard.style.left = (window.innerWidth - (left + 300) - 5) + 'px';
-    }
-
-    container.style.left = (offset.left + DOMNode.offsetWidth - 15) + 'px';
-    container.style['z-index'] = '10';
     
     container.appendChild(triggerNode);
     container.appendChild(dashboard);
+    setupContainerPosition(DOMNode, container, dashboard);
     document.body.appendChild(container);
     this.container = container;
 };

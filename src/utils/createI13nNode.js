@@ -39,8 +39,13 @@ module.exports = function createI13nNode (Component) {
             var props = objectAssign({}, this.props);
 
             // delete the props that only used in this level
-            delete props.model;
-            delete props.viewport;
+            try {
+                delete props.model;
+                delete props.viewport;
+            } catch (e) {
+                props.model = undefined;
+                props.viewport = undefined;
+            }
 
             return React.createElement(
                 Component,

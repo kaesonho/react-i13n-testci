@@ -8,6 +8,10 @@ function isModifiedEvent (e) {
     return !!(e.metaKey || e.altKey || e.ctrlKey || e.shiftKey);
 }
 
+function isNewWindow (target) {
+    return target && target.target && '_blank' === target.target;
+}
+
 function isDefaultRedirectLink (target) {
     var defaultRedirectLink = false;
     // if it's a  
@@ -53,12 +57,6 @@ module.exports = function clickHandler (e) {
         return;
     }
 
-    // this is a click with a modifier or not a left-click
-    // let browser handle it natively
-    if (isModifiedEvent(e) || !isLeftClickEvent(e)) {
-        isPreventDefault = false;
-        isRedirectLink = false;
-    }
     href = self.props.href;
 
     // if users disable the redirect by follow, force set it as false
@@ -71,6 +69,13 @@ module.exports = function clickHandler (e) {
     if (!href || (href && href[0] === '#')) {
         isRedirectLink = false;
         isPreventDefault = false;
+    }
+
+    // this is a click with a modifier or not a left-click
+    // let browser handle it natively
+    if (isModifiedEvent(e) || !isLeftClickEvent(e) || isNewWindow(target)) {
+        isPreventDefault = false;
+        isRedirectLink = false;
     }
 
     if (isPreventDefault) {
