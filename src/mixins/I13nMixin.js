@@ -62,10 +62,7 @@ var I13nMixin = {
      */
     getDefaultProps: function () {
         return {
-            model: {},
-            isLeafNode: false,
-            bindClickEvent: false,
-            follow: undefined // keep undefined,take it only if users set that
+            model: {}
         };
     },
 

@@ -36,7 +36,7 @@ describe('React I13n test', function () {
         it('should init correctly and give the rootI13nNode the correct default model value', function (done) {
             browser.executeScript('return window.rootI13nNode.getMergedModel()').then(function getResult (result) {
                 expect(result).to.deep.equal({sec: 'default-section-name', page: 'test-page'});
-                done()
+                done();
             }, function getError (err) {
                 // https://github.com/angular/protractor/issues/841
                 // ignore the error throw by IE driver occasionally (~1%)
@@ -51,7 +51,7 @@ describe('React I13n test', function () {
         it('should fire a pageview', function (done) {
             browser.executeScript('return window.firedEvents').then(function getResult (events) {
                 expect(events[0].name).to.equal('pageview');
-                done()
+                done();
             }, function getError (err) {
                 // https://github.com/angular/protractor/issues/841
                 // ignore the error throw by IE driver occasionally (~1%)
@@ -116,7 +116,7 @@ describe('React I13n test', function () {
                 expect(events[currentEventCount - 1].model).to.deep.equal({page: 'test-page', sec: 'foo'});
                 expect(events[currentEventCount - 1].text).to.equal('NormalLink');
                 expect(events[currentEventCount - 1].position).to.equal(1);
-                done()
+                done();
             }, function getError (err) {
                 // https://github.com/angular/protractor/issues/841
                 // ignore the error throw by IE driver occasionally (~1%)
@@ -137,7 +137,7 @@ describe('React I13n test', function () {
                 expect(events[currentEventCount - 1].model).to.deep.equal({page: 'test-page', sec: 'dynamical-generated'});
                 expect(events[currentEventCount - 1].text).to.equal('NormalLinkWithFunctionModel');
                 expect(events[currentEventCount - 1].position).to.equal(2);
-                done()
+                done();
             }, function getError (err) {
                 // https://github.com/angular/protractor/issues/841
                 // ignore the error throw by IE driver occasionally (~1%)
@@ -158,7 +158,28 @@ describe('React I13n test', function () {
                 expect(events[currentEventCount - 1].model).to.deep.equal({page: 'test-page', sec:'foo'});
                 expect(events[currentEventCount - 1].text).to.equal('LinkWithHashUrl');
                 expect(events[currentEventCount - 1].position).to.equal(3);
-                done()
+                done();
+            }, function getError (err) {
+                // https://github.com/angular/protractor/issues/841
+                // ignore the error throw by IE driver occasionally (~1%)
+                if (13 === err.code) {
+                    return false;
+                } else {
+                    throw err;
+                }
+            });
+        });
+        
+        it('should fire a click beacon without do anything if target="_blank"', function (done) {
+            var link = $('.NormalLinkWithTargetBlank a');
+            link.click();
+            browser.executeScript('return window.firedEvents').then(function getResult (events) {
+                var currentEventCount = events.length;
+                expect(events[currentEventCount - 1].name).to.equal('click');
+                expect(events[currentEventCount - 1].model).to.deep.equal({page: 'test-page', sec:'foo'});
+                expect(events[currentEventCount - 1].text).to.equal('NormalLinkWithTargetBlank');
+                expect(events[currentEventCount - 1].position).to.equal(4);
+                done();
             }, function getError (err) {
                 // https://github.com/angular/protractor/issues/841
                 // ignore the error throw by IE driver occasionally (~1%)

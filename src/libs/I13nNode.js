@@ -145,15 +145,16 @@ I13nNode.prototype.getPosition = function getPosition () {
 /**
  * Get text of the i13nNode
  * @method getText
- * @param {Object} target the event target, if no target then default take the DOMNode of i13nNode
+ * @param {Object} target the event target, would take the target's text then i13n node's text
  * @return {String} text of the node
  */
 I13nNode.prototype.getText = function getText (target) {
-    var DOMNode = target || this.getDOMNode();
-    if (!DOMNode) {
+    var DOMNode = this.getDOMNode();
+    if (!DOMNode && !target) {
         return '';
     }
-    var text = DOMNode.value || DOMNode.innerHTML;
+    var text = (DOMNode && (DOMNode.value || DOMNode.innerHTML)) ||
+        (target && (target.value || target.innerHTML));
     if (text) {
         text = text.replace(TAG_PATTERN, '');
     }

@@ -27,7 +27,7 @@ module.exports = function createI13nNode (Component) {
         if (Component.hasOwnProperty(key) && -1 === STATIC_CLONE_BLACK_LIST.indexOf(key)) {
             staticsObject[key] = Component[key];
         }   
-    });  
+    });
 
     var I13nComponent = React.createClass(objectAssign({}, I13nMixin, {statics: staticsObject}, {
         displayName: 'I13n' + componentName,
@@ -36,10 +36,21 @@ module.exports = function createI13nNode (Component) {
          * @method render
          */
         render: function () {
+            var props = objectAssign({}, this.props);
+
+            // delete the props that only used in this level
+            try {
+                delete props.model;
+                delete props.viewport;
+            } catch (e) {
+                props.model = undefined;
+                props.viewport = undefined;
+            }
+
             return React.createElement(
                 Component,
-                this.props,
-                this.props.children
+                props,
+                props.children
             );
         }
     }));

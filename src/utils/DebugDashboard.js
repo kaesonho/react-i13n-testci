@@ -1,19 +1,35 @@
-var EventListener = require('react/lib/EventListener');
 /* global document, window*/
+var EventListener = require('react/lib/EventListener');
 
 var uniqueId = 0;
 
-function cumulativeOffset (element) {
+function setupContainerPosition (DOMNode, container, dashboard) {
+    var offset = cumulativeOffset(DOMNode);
+    var left = offset.left + DOMNode.offsetWidth - 15;
+    
+    container.style.position = 'absolute';
+    container.style['max-width'] = '300px';
+    container.style.top = offset.top + 'px';
+
+    // adjust layout if dashboard is out of the viewport
+    if (left + 305 > window.innerWidth) {
+        dashboard.style.left = (window.innerWidth - (left + 300) - 5) + 'px';
+    }
+
+    container.style.left = (offset.left + DOMNode.offsetWidth - 15) + 'px';
+    container.style['z-index'] = '10';
+}
+
+function cumulativeOffset (DOMNode) {
     var top = 0;
-    var left = 0;
+    var rect = DOMNode.getBoundingClientRect();
     do {
-        top += element.offsetTop  || 0;
-        left += element.offsetLeft || 0;
-        element = element.offsetParent;
-    } while (element);
+        top += DOMNode.offsetTop  || 0;
+        DOMNode = DOMNode.offsetParent;
+    } while (DOMNode);
     return {
         top: top,
-        left: left
+        left: rect.left
     };
 }
 
@@ -24,14 +40,16 @@ function cumulativeOffset (element) {
  * @constructor
  */
 var DebugDashboard = function DebugDashboard (i13nNode) {
-    var domNode = i13nNode.getDOMNode();
+    var DOMNode = i13nNode.getDOMNode();
+    if (!DOMNode) {
+        return;
+    }
     var container = document.createElement('div');
     container.id = 'i13n-debug-' + uniqueId;
     var triggerNode = document.createElement('span');
     var dashboard = document.createElement('div');
     var model = i13nNode.getMergedModel();
-    var modelInfomation = ''; 
-    var offset = cumulativeOffset(domNode);
+    var modelInfomation = '';
 
     // compose model data
     model.position = i13nNode.getPosition();
@@ -71,41 +89,31 @@ var DebugDashboard = function DebugDashboard (i13nNode) {
         }
     });
 
-    domNode.style.transition = 'border 0.05s';
+    DOMNode.style.transition = 'border 0.05s';
 
     this.mouseOverListener = EventListener.listen(triggerNode, 'mouseover', function () {
-        domNode.style.border = '5px solid #5a00c8';
+        DOMNode.style.border = '5px solid #5a00c8';
     });
 
     this.mouseOutListener = EventListener.listen(triggerNode, 'mouseout', function () {
-        domNode.style.border = null;
+        DOMNode.style.border = null;
     });
 
-    // generate container
-    container.style.position = 'absolute';
-    container.style['max-width'] = '300px';
-    container.style.top = offset.top + 'px';
-    var left = offset.left + domNode.offsetWidth - 15;
-
-    // adjust layout if dashboard is out of the viewport
-    if (left + 305 > window.innerWidth) {
-        dashboard.style.left = (window.innerWidth - (left + 300) - 5) + 'px';
-    }
-
-    container.style.left = (offset.left + domNode.offsetWidth - 15) + 'px';
-    container.style['z-index'] = '10';
     
     container.appendChild(triggerNode);
     container.appendChild(dashboard);
+    setupContainerPosition(DOMNode, container, dashboard);
     document.body.appendChild(container);
     this.container = container;
 };
 
 DebugDashboard.prototype.destroy = function () {
-    this.clickListener.remove();
-    this.mouseOverListener.remove();
-    this.mouseOutListener.remove();
-    document.body.removeChild(this.container);
+    this.clickListener && this.clickListener.remove();
+    this.mouseOverListener && this.mouseOverListener.remove();
+    this.mouseOutListener && this.mouseOutListener.remove();
+    if (this.container) {
+        document.body.removeChild(this.container);
+    }
 };
 
 module.exports = DebugDashboard;
