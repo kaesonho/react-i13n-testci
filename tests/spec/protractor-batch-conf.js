@@ -53,7 +53,7 @@ var config = {
                     ['context.environment=prod', 'context.device=desktop', 'context.browserName=safari', 'context.browserVersion=latest']
                 ]
             }
-        },
+        },*/
         {
             'server_manager': {
                 'server_module': servers.Selastic,
@@ -69,7 +69,7 @@ var config = {
                     ['context.environment=prod', 'context.device=desktop', 'context.browserName="internet explorer"', 'context.browserVersion=8']
                 ]
             }
-        },*/
+        },
         {
             'server_manager': {
                 'server_module': servers.Selastic,
