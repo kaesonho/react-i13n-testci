@@ -81,12 +81,12 @@ var Viewport = {
         };
     },
 
-    componentDidMount: function () {
+    subscribeViewportEvents: function () {
         this.subscribe('ThrottledEvents', 'scroll', this._detectViewport);
         this.subscribe('DocumentEvents', 'visibilitychange', this._detectHidden);
     },
 
-    componentWillUnmount: function () {
+    unsubscribeViewportEvents: function () {
         this.unsubscribe('ThrottledEvents', 'scroll');
         this.unsubscribe('DocumentEvents', 'visibilitychange');
     },
