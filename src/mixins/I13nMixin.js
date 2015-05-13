@@ -94,6 +94,7 @@ var I13nMixin = {
 
         // enable viewport checking if enabled
         if (self._getReactI13n().isViewportEnabled()) {
+            self.subscribeViewportEvents();
             self._enableViewportDetection();
         }
 
@@ -131,6 +132,10 @@ var I13nMixin = {
 
         if (this.clickEventListener) {
             this.clickEventListener.remove();
+        }
+        
+        if (this._getReactI13n().isViewportEnabled()) {
+            this.unsubscribeViewportEvents();
         }
        
         // remove debug dashboard
