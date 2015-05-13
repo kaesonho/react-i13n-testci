@@ -7,6 +7,7 @@ var clickHandler = require('../utils/clickHandler');
 var EventListener = require('react/lib/EventListener');
 var ViewportMixin = require('../vendors/ViewportMixin');
 var DebugDashboard = require('../utils/DebugDashboard');
+var isEmpty = require('lodash').isEmpty;
 require('setimmediate');
 var IS_DEBUG_MODE = isDebugMode();
 
@@ -40,6 +41,7 @@ var I13nMixin = {
     propTypes: {
         component: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.func]),
         model: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.func]),
+        i13nModel: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.func]),
         isLeafNode: React.PropTypes.bool,
         bindClickEvent: React.PropTypes.bool,
         follow: React.PropTypes.bool
@@ -62,7 +64,8 @@ var I13nMixin = {
      */
     getDefaultProps: function () {
         return {
-            model: {}
+            model: {},
+            i13nModel: {}
         };
     },
 
@@ -173,8 +176,12 @@ var I13nMixin = {
         var self = this;
         var I13nNode = self._getReactI13n().getI13nNodeClass();
         var parentI13nNode = self._getParentI13nNode();
-        self._i13nNode = new I13nNode(parentI13nNode, self.props.model,
-            self.isLeafNode(), self._getReactI13n().isViewportEnabled());
+        // TODO @kaesonho remove BC for model
+        self._i13nNode = new I13nNode(
+            parentI13nNode, 
+            ('function' === typeof self.props.i13nModel || !isEmpty(self.props.i13nModel)) ? self.props.i13nModel : self.props.model,
+            self.isLeafNode(), 
+            self._getReactI13n().isViewportEnabled());
     },
 
     /**

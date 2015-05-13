@@ -94,10 +94,31 @@ describe('createI13nNode', function () {
         }
         expect(I13nTestComponent.displayName).to.equal('I13nTestComponent');
         var container = document.createElement('div');
-        var component = React.render(React.createElement(I13nTestComponent, {model: {sec: 'foo'}}), container);
+        var component = React.render(React.createElement(I13nTestComponent, {i13nModel: {sec: 'foo'}}), container);
         expect(rootI13nNode.getChildrenNodes().get(0).getModel()).to.deep.equal({sec: 'foo'});
     });
     
+    it('should generate a component with createI13nNode and BC for users passing data as model', function (done) {
+        var TestComponent = React.createClass({
+            displayName: 'TestComponent',
+            render: function() {
+                return React.createElement('div');
+            }
+        });
+
+        // check the initial state is correct after render
+        var I13nTestComponent = createI13nNode(TestComponent);
+        mockData.reactI13n.execute = function (eventName) {
+            // should get a created event
+            expect(eventName).to.equal('created');
+            done();
+        }
+        expect(I13nTestComponent.displayName).to.equal('I13nTestComponent');
+        var container = document.createElement('div');
+        var component = React.render(React.createElement(I13nTestComponent, {model: {sec: 'foo'}}), container);
+        expect(rootI13nNode.getChildrenNodes().get(0).getModel()).to.deep.equal({sec: 'foo'});
+    });
+
     it('should generate a component with createI13nNode with statics', function (done) {
         var TestComponent = React.createClass({
             displayName: 'TestComponent',

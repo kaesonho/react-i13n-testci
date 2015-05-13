@@ -16,13 +16,13 @@ It's originated from [fastbreak/crossover](https://git.corp.yahoo.com/fastbreak/
 
 ### I13n Tree
 ![Instrumentation Tree](https://git.corp.yahoo.com/github-enterprise-assets/0000/1644/0003/9712/5811235c-f2b1-11e4-9692-becb91d7336d.png)
-* `react-i13n` build the `I13n Tree` with `context` and life cycle event `componentWillMount`, we could define the `model` data we need. Which means we don't need addtional DOM manipulation when we want to get `model` values for sending out linkview/click beacon.
-* `model` could be a plain object or a dynamic function with a proper `model` object return, which means we could dynamically change `model` data without causing rerender due to the `props` changes.
-* Whenever we want to get the `model` for certain node, it traverses back to the root and merge all the `model` information in the path. Since the tree is already built and we don't need extra DOM access, it should be pretty cheap and efficient. 
+* `react-i13n` build the `I13n Tree` with `context` and life cycle event `componentWillMount`, we could define the `i13nModel` data we need. Which means we don't need addtional DOM manipulation when we want to get `i13nModel` values for sending out linkview/click beacon.
+* `i13nModel` could be a plain object or a dynamic function with a proper `i13nModel` object return, which means we could dynamically change `i13nModel` data without causing rerender due to the `props` changes.
+* Whenever we want to get the `i13nModel` for certain node, it traverses back to the root and merge all the `i13nModel` information in the path. Since the tree is already built and we don't need extra DOM access, it should be pretty cheap and efficient. 
 
 ### I13n Node
 * The node in i13n Tree, it will be passed with the `payload` to the handler function, it provides APIs for users to get the informations needed for beaconing.
-* `i13nNode.getModel` - get the model data of the node.
+* `i13nNode.getModel` - get the i13nModel data of the node.
 * `i13nNode.getMergedModel` - get the model data which is traversed and combined to the root.
 * `i13nNode.getPosition` - get the position of its parent.
 * `i13nNode.getText` - get the inner text value of that node.
@@ -47,7 +47,7 @@ ynpm install react-i13n
 We provide `setupI13n` as a convenient `higher order function` to setup the ReactI13n, you will need to pass your `top level component`, `options`, and `plugins` into. It takes care of creating a `ReactI13n` instance and setup the plugins. Just use the function to create a component then render it.
 * `Component` - the top level component
 * `options` - the options passed into ReactI13n
-* `options.rootModelData` - defined the `model` data of the root.
+* `options.rootModelData` - defined the `i13nModel` data of the root.
 * `options.I13nNodeClass` - you can inherit the `I13nNode` and add the functionality you need, just pass the class.
 * `options.isViewportEnabled` - define if you want to enable the viewport checking.
 * `plugins` - plugins array that you defined according to the definition below.
@@ -58,7 +58,7 @@ A valid plugin must contains
 * `eventHandlers` - handlers functions for the events, typically in the eventHandler function we would send out a tracking beacon, now `react-i13n` has `click`, `created` and `enterViewport`, you can define the events you need and implement the handlers function, e.g., `pageview`.
     * `click` - happens when user click a `I13nComponent` with `ClickHandler`
     * `created` - happens when the `I13nComponent` is created
-    * `enterViewport` - happens when the the `isViewportEnabled` is true and the node enter the viewport
+    * `enterViewport` - happens when the `isViewportEnabled` is true and the node enter the viewport
 
 All the `eventHandler` would receive a `payload` object and a `callback` function, in payload you will get:
 * `payload.I13nNode` - the I13n node related to the event, then you could use the APIs provided by `I13nNode` to get the information you need.
@@ -115,7 +115,7 @@ var Foo = React.createClass({
 });
 
 // in template
-<Foo model={model}>
+<Foo i13nModel={i13nModel}>
     // will create a i13n node for Foo
     ...
 </Foo>
@@ -128,21 +128,21 @@ var Foo = React.createClass({
 });
 var I13nFoo = createI13nNode(Foo);
 // in template
-<I13nFoo model={model}>
+<I13nFoo i13nModel={i13nModel}>
     // will create a i13n node for Foo
     ...
 </I13nFoo>
 ```
 
 ### I13nComponent
-Instead of adding `mixin` everywhere, we provide `I13nComponent` for you to add an additional level to pass model data.
+Instead of adding `mixin` everywhere, we provide `I13nComponent` for you to add an additional level to pass i13nModel data.
 * Note that this feature can only used after `react-0.13`, if you are using older version, you will have to create a component by your own and add the [I13nMixin](#13n-mixin)
 
 ```js
 var I13nComponent = require('react-i13n').I13nComponent;
 
 // in template
-<I13nComponent model={model}>
+<I13nComponent i13nModel={i13nModel}>
     <div>
         // the component inside would become the child node of I13nComponent
     </div>
@@ -155,26 +155,26 @@ You can pass `component` into `I13nComponent`, it can be a tag name or a Compone
 var I13nComponent = require('react-i13n').I13nComponent;
 
 // in template
-<I13nComponent component='div' model={model}> // I13nComponent will also create a div if you define the component
+<I13nComponent component='div' i13nModel={i13nModel}> // I13nComponent will also create a div if you define the component
     <div>
         // the component inside would become the child node of I13nComponent
     </div>
 </I13nComponent>
 ```
 
-We are also able to pass model as a function to get dynamical generated data.
+We are also able to pass i13nModel as a function to get dynamical generated data.
 
 ```js
 var I13nComponent = require('react-i13n').I13nComponent;
 
-function getModel: function () {
+function getI13nModel: function () {
     return {
-        // you can dynamical generate model data here based on the use case
+        // you can dynamical generate i13nModel data here based on the use case
     };
 }
 
 // in template
-<I13nComponent component='div' model={getModel}>
+<I13nComponent component='div' i13nModel={getI13nModel}>
     <div>
         // the component inside would become the child node of I13nComponent
     </div>
@@ -182,7 +182,7 @@ function getModel: function () {
 ```
 
 * `component` - the component to be rendered, we could either pass a string of native tag or React Component
-* `model` - the model data object or a dynamic function returns the data object
+* `i13nModel` - the i13nModel data object or a dynamic function returns the data object
 * `isLeafNode` - define if it's a leaf node or not, we will fire `created` event for every node when it's created, `isLeafNode` will help us to know if we want to do the action. e.g, we might only want to send out beacons to record for the links. 
 * `bindClickEvent` - define if want to bind a click handler or not
 * `follow` - define if click handler need to redirect users to destination after sending beacon or not. You could set `follow=false` and the handler would send out beacon but will not redirect users.
@@ -192,7 +192,7 @@ function getModel: function () {
 var I13nComponent = require('react-i13n').I13nComponent;
 
 // in template, then the click handler would fire the click event without redirect users to the destination
-<I13nComponent component='ul' model={model} isLeafNode={false} bindClickEvent={true}> follow={false}>
+<I13nComponent component='ul' i13nModel={i13nModel} isLeafNode={false} bindClickEvent={true}> follow={false}>
     // if the ul or any item in it is clicked, it would fire a click event
 </I13nComponent>
 ```
@@ -209,7 +209,7 @@ For common usage, we define some components with specific setting, we can requir
 var I13nAnchor = require('react-i13n').I13nAnchor
 
 // use a tag like a normal a tag, you can even setup the click event and it will work with the click beacon sending.
-<I13nAnchor href={herf} model={model} onClick={someClickHandler}>
+<I13nAnchor href={herf} i13nModel={i13nModel} onClick={someClickHandler}>
     ... 
 </I13nAnchor>
 ```

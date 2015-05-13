@@ -41,9 +41,11 @@ module.exports = function createI13nNode (Component) {
             // delete the props that only used in this level
             try {
                 delete props.model;
+                delete props.i13nModel;
                 delete props.viewport;
             } catch (e) {
                 props.model = undefined;
+                props.i13nModel = undefined;
                 props.viewport = undefined;
             }
 

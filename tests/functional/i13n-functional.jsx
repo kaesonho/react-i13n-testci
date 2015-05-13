@@ -40,34 +40,34 @@ var I13nComponentLevel1 = React.createClass({
             <div className="P(4px) M(4px) Bgc(#d9edf7) I13nComponentLevel1">
                 Level 1 Links
                 <div className="P(4px) M(4px) Bgc(#ececec) NormalLink">
-                    <I13nAnchor className="NormalLink" model={{sec:'foo'}} follow={false} href="./mock-destination-page.html">NormalLink</I13nAnchor>
+                    <I13nAnchor className="NormalLink" i13nModel={{sec:'foo'}} follow={false} href="./mock-destination-page.html">NormalLink</I13nAnchor>
                 </div>
                 <div className="P(4px) M(4px) Bgc(#ececec) NormalLinkWithFunctionModel">
-                    <I13nAnchor model={getModelData} follow={false} href="./mock-destination-page.html">NormalLinkWithFunctionModel</I13nAnchor>
+                    <I13nAnchor i13nModel={getModelData} follow={false} href="./mock-destination-page.html">NormalLinkWithFunctionModel</I13nAnchor>
                 </div>
                 <div className="P(4px) M(4px) Bgc(#ececec) LinkWithHashUrl">
-                    <I13nAnchor model={{sec:'foo'}} href="#">LinkWithHashUrl</I13nAnchor>
+                    <I13nAnchor i13nModel={{sec:'foo'}} href="#">LinkWithHashUrl</I13nAnchor>
                 </div>
                 <div className="P(4px) M(4px) Bgc(#ececec) NormalLinkWithTargetBlank">
-                    <I13nAnchor target="_blank" className="NormalLink" model={{sec:'foo'}} href="./mock-destination-page.html">NormalLinkWithTargetBlank</I13nAnchor>
+                    <I13nAnchor target="_blank" className="NormalLink" i13nModel={{sec:'foo'}} href="./mock-destination-page.html">NormalLinkWithTargetBlank</I13nAnchor>
                 </div>
                 <div className="P(4px) M(4px) Bgc(#ececec) NormalLinkWithFollow">
-                    <I13nAnchor model={{sec:'foo'}} href="./mock-destination-page.html">NormalLinkWithFollow</I13nAnchor>
+                    <I13nAnchor i13nModel={{sec:'foo'}} href="./mock-destination-page.html">NormalLinkWithFollow</I13nAnchor>
                 </div>
                 <div className="P(4px) M(4px) Bgc(#ececec) NormalButton">
                     <form action="/mock-destination-page.html">
                         <input type="text" name="fname"></input>
-                        <I13nButton model={{sec:linkSec}} href="./mock-destination-page.html">NormalButton</I13nButton>
+                        <I13nButton i13nModel={{sec:linkSec}} href="./mock-destination-page.html">NormalButton</I13nButton>
                     </form>
                 </div>
                 {links}
-                <I13nComponentLevel2Hidden model={{sec:'hidden'}}/>
-                <I13nComponentLevel2 model={{sec: 'level2'}}/>
-                <I13nComponent className="NestTestI13nComponentLevel1" model={{vl1:'foo', vl3_ovr:'foo'}}>
+                <I13nComponentLevel2Hidden i13nModel={{sec:'hidden'}}/>
+                <I13nComponentLevel2 i13nModel={{sec: 'level2'}}/>
+                <I13nComponent className="NestTestI13nComponentLevel1" i13nModel={{vl1:'foo', vl3_ovr:'foo'}}>
                     <div>
-                        <I13nComponent className="NestTestI13nComponentLevel2" model={{vl2:'bar'}}>
+                        <I13nComponent className="NestTestI13nComponentLevel2" i13nModel={{vl2:'bar'}}>
                             <div>
-                                <I13nAnchor className="NestTestI13nComponentLevel3" follow={false} model={{vl3:'baz', vl3_ovr:'baz'}}>NestTestI13nComponentLevel3</I13nAnchor>
+                                <I13nAnchor className="NestTestI13nComponentLevel3" follow={false} i13nModel={{vl3:'baz', vl3_ovr:'baz'}}>NestTestI13nComponentLevel3</I13nAnchor>
                             </div>
                         </I13nComponent>
                     </div>
@@ -87,7 +87,7 @@ var I13nComponentLevel2 = React.createClass({
             var linkSec = 'level2-' + i
             links.push(
                 <div className="P(4px) M(4px) Bgc(#ececec)" key={i}>
-                    <I13nAnchor model={{sec:linkSec, lv2: 'foo'}} follow={false} href="https://yahoo.com">{linkText}</I13nAnchor>
+                    <I13nAnchor i13nModel={{sec:linkSec, lv2: 'foo'}} follow={false} href="https://yahoo.com">{linkText}</I13nAnchor>
                 </div>
             );
         }
@@ -125,7 +125,7 @@ var I13nComponentLevel2Hidden = React.createClass({
         }
         return (
             <div className="P(4px) M(4px) Bgc(#fcf8e3) I13nComponentLevel2Hidden">
-                <I13nDiv className="HiddenBtn" onClick={this.clickHandler} bindClickEvent={true} model={{sec:'hidden-btn'}}>Show Hidden Links</I13nDiv>
+                <I13nDiv className="HiddenBtn" onClick={this.clickHandler} bindClickEvent={true} i13nModel={{sec:'hidden-btn'}}>Show Hidden Links</I13nDiv>
                 {links}
             </div>
         );
@@ -140,7 +140,7 @@ var I13nDemo = React.createClass({
     },
     render: function () {
         return (
-            <I13nComponentLevel1 model={{sec:'level1'}}/>
+            <I13nComponentLevel1 i13nModel={{sec:'level1'}}/>
         );
     }
 });
