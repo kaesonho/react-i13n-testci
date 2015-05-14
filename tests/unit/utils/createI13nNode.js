@@ -23,7 +23,9 @@ var mockViewport = {
     _detectHidden: function () {},
     onEnterViewport: function (handler) {
         mockViewport._handleEnterViewport = handler;
-    }
+    },
+    subscribeViewportEvents: function () {},
+    unsubscribeViewportEvents: function () {}
 };
 var mockClickHandler = function () {};
 MockReactI13n.getInstance = function () {
