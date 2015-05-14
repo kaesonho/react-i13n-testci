@@ -6,7 +6,7 @@
   "repository": {
     "type": "git",
     "url": "git@git.corp.yahoo.com:kaesonho/react-i13n.git#master",
-    "revision": "5f0c0009c68b0a71a889512d22bdcd252add3c5b"
+    "revision": "75ca498614f1a528128ac112df38b9ba28832944"
   },
   "scripts": {
     "cover": "grunt cover",
@@ -82,7 +82,7 @@
     "screwdriver": {
       "project_id": 36725,
       "project_url": "http://screwdriver.corp.yahoo.com/projects/36725",
-      "build_url": "http://jenkins.screwdriver.corp.yahoo.com:9999/jenkins/job/36725-react-i13n-trunk-component/5/"
+      "build_url": "http://jenkins.screwdriver.corp.yahoo.com:9999/jenkins/job/36725-react-i13n-trunk-component/9/"
     }
   },
   "yhint": {
