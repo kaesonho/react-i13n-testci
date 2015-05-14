@@ -19,7 +19,6 @@ var container = document.getElementById('container');
 var itemsNumber = getJsonFromUrl().items || 1;
 
 
-
 var I13nComponentLevel1 = React.createClass({
     render: function () {
         var links = [];
