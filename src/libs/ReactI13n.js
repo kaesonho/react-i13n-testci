@@ -27,7 +27,7 @@ if ('client' === ENVIRONMENT) {
 var ReactI13n = function ReactI13n (options) {
     debug('init', options);
     options = options || {};
-    this._i13nNodeClass = options.i13nNodeClass || I13nNode;
+    this._i13nNodeClass = 'function' === typeof options.i13nNodeClass ? options.i13nNodeClass : I13nNode;
 
     this._plugins = Immutable.Map();
     this._eventsQueues = Immutable.Map();
@@ -150,7 +150,7 @@ ReactI13n.prototype.getRootI13nNode = function getRootI13nNode () {
 ReactI13n.prototype.updateOptions = function updateOptions (options) {
     debug('updated', options);
     options = options || {};
-    this._i13nNodeClass = options.i13nNodeClass ? options.i13nNodeClass : this._i13nNodeClass;
+    this._i13nNodeClass = 'function' === typeof options.i13nNodeClass ? options.i13nNodeClass : this._i13nNodeClass;
     this._isViewportEnabled = (undefined !== options.isViewportEnabled) ?
         options.isViewportEnabled : this._isViewportEnabled;
     this._rootModelData = options.rootModelData ? options.rootModelData : this._rootModelData;
