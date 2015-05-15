@@ -135,8 +135,15 @@ var I13nFoo = createI13nNode(Foo);
 ```
 
 ### I13nComponent
-Instead of adding `mixin` everywhere, we provide `I13nComponent` for you to add an additional level to pass i13nModel data.
-* Note that this feature can only used after `react-0.13`, if you are using older version, you will have to create a component by your own and add the [I13nMixin](#13n-mixin)
+Instead of adding `mixin` everywhere, we provide `I13nComponent` for you to add an additional level to pass `i13nModel` data.
+* Please not that since we integrate the feature of `parent-based context`, with `dev` env, react will generate warning like
+
+```js
+Warning: owner-based and parent-based contexts differ (values: [object Object] vs [object Object]) for key (parentI13nNode) while mounting I13nAnchor (see: http://fb.me/react-context-by-parent)
+```
+
+* This feature can only used after `react-0.13`, if you are using older version, you will have to create a component by your own and add the [I13nMixin](#13n-mixin).
+
 
 ```js
 var I13nComponent = require('react-i13n').I13nComponent;
