@@ -104,8 +104,13 @@ var I13nDempApp = setupI13n(DemoApp, options, [gaPlugin]);
 ```
 
 ### I13nMixin and createI13nNode
-Everything is done by i13n mixin, which means if we want to create an component to be an `I13nNode`, we will have to add the `I13nMixin` into the component.
-We also provide `createI13nNode` as a `higher order function` for you to wrap your component as an `I13nNode`
+Everything is done by the `i13n mixin`, which means if we want to create an component to be an `I13nNode`, we will have to add the `I13nMixin` into the component.
+You can pass the options with `props` to config what you want to do with this `I13nNode`.
+* `i13nModel` - the i13nModel data object or a dynamic function returns the data object
+* `isLeafNode` - define if it's a leaf node or not, we will fire `created` event for every node when it's created, `isLeafNode` will help us to know if we want to do the action. e.g, we might only want to send out beacons to record links. 
+* `bindClickEvent` - define if want to bind a click handler or not
+* `follow` - define if click handler need to redirect users to destination after sending beacon or not. You could set `follow=false` and the handler would send out beacon but will not redirect users.
+* you can pass all the props you need, we will pass them to the component
 
 ```js
 var I13nMixin = require('react-i13n').I13nMixin;
@@ -121,12 +126,20 @@ var Foo = React.createClass({
 </Foo>
 ```
 
+We also provide `createI13nNode` as a `higher order function` for you to wrap your component as an `I13nNode`
+* component - react component or string of native tag
+* options - options as the default props
+
 ```js
 var createI13nNode = require('react-i13n').createI13nNode;
 var Foo = React.createClass({
     ...
 });
-var I13nFoo = createI13nNode(Foo);
+var I13nFoo = createI13nNode(Foo, {
+    isLeafNode: false,
+    bindClickEvent: false,
+    follow: false
+});
 // in template
 <I13nFoo i13nModel={i13nModel}>
     // will create a i13n node for Foo
@@ -134,45 +147,30 @@ var I13nFoo = createI13nNode(Foo);
 </I13nFoo>
 ```
 
-### I13nComponent
-Instead of adding `mixin` everywhere, we provide `I13nComponent` for you to add an additional level to pass `i13nModel` data.
-* Please not that since we integrate the feature of `parent-based context`, with `dev` env, react will generate warning like
+If you want to track the links, you will need to create anchor with `createI13nNode` and enable the click tracking.
 
 ```js
-Warning: owner-based and parent-based contexts differ (values: [object Object] vs [object Object]) for key (parentI13nNode) while mounting I13nAnchor (see: http://fb.me/react-context-by-parent)
-```
+var createI13nNode = require('react-i13n').createI13nNode;
+var I13nAnchor = createI13nNode('a', {
+    isLeafNode: true,
+    bindClickEvent: true,
+    follow: true
+});
 
-* This feature can only used after `react-0.13`, if you are using older version, you will have to create a component by your own and add the [I13nMixin](#13n-mixin).
-
-
-```js
-var I13nComponent = require('react-i13n').I13nComponent;
-
-// in template
-<I13nComponent i13nModel={i13nModel}>
-    <div>
-        // the component inside would become the child node of I13nComponent
-    </div>
-</I13nComponent>
-```
-
-You can pass `component` into `I13nComponent`, it can be a tag name or a Component.
-
-```js
-var I13nComponent = require('react-i13n').I13nComponent;
-
-// in template
-<I13nComponent component='div' i13nModel={i13nModel}> // I13nComponent will also create a div if you define the component
-    <div>
-        // the component inside would become the child node of I13nComponent
-    </div>
-</I13nComponent>
+<I13nAnchor i13nModel={i13nModel}>
+    ...
+</I13nAnchor>
 ```
 
 We are also able to pass i13nModel as a function to get dynamical generated data.
 
 ```js
-var I13nComponent = require('react-i13n').I13nComponent;
+var createI13nNode = require('react-i13n').createI13nNode;
+var I13nAnchor = createI13nNode('a', {
+    isLeafNode: true,
+    bindClickEvent: true,
+    follow: true
+});
 
 function getI13nModel: function () {
     return {
@@ -180,31 +178,33 @@ function getI13nModel: function () {
     };
 }
 
-// in template
-<I13nComponent component='div' i13nModel={getI13nModel}>
-    <div>
-        // the component inside would become the child node of I13nComponent
-    </div>
-</I13nComponent>
+<I13nAnchor i13nModel={getI13nModel}>
+    ...
+</I13nAnchor>
 ```
 
-* `component` - the component to be rendered, we could either pass a string of native tag or React Component
-* `i13nModel` - the i13nModel data object or a dynamic function returns the data object
-* `isLeafNode` - define if it's a leaf node or not, we will fire `created` event for every node when it's created, `isLeafNode` will help us to know if we want to do the action. e.g, we might only want to send out beacons to record for the links. 
-* `bindClickEvent` - define if want to bind a click handler or not
-* `follow` - define if click handler need to redirect users to destination after sending beacon or not. You could set `follow=false` and the handler would send out beacon but will not redirect users.
-* you can pass all the props you need, we will pass them to the component
+Other than links, you can create a middle tag with i13n functionalities.
+* Please not that since we integrate the feature of `parent-based context`, with `dev` env, react will generate warning like
 
 ```js
-var I13nComponent = require('react-i13n').I13nComponent;
+Warning: owner-based and parent-based contexts differ (values: [object Object] vs [object Object]) for key (parentI13nNode) while mounting I13nAnchor (see: http://fb.me/react-context-by-parent)
+```
+* This feature can only used after `react-0.13`, if you are using older version, you will have to create a component by your own and add the [I13nMixin](#13n-mixin).
 
-// in template, then the click handler would fire the click event without redirect users to the destination
-<I13nComponent component='ul' i13nModel={i13nModel} isLeafNode={false} bindClickEvent={true}> follow={false}>
-    // if the ul or any item in it is clicked, it would fire a click event
-</I13nComponent>
+```js
+var createI13nNode = require('react-i13n').createI13nNode;
+var I13nDiv = createI13nNode('div', {
+    isLeafNode: false,
+    bindClickEvent: false,
+    follow: false
+});
+
+<I13nDiv i13nModel={parentI13nModel}>
+    // the i13n node inside will inherit the model data of its parent
+</I13nDiv>
 ```
 
-For common usage, we define some components with specific setting, we can require them without duplicated `props`. These setting can be overwritten by `props`.
+For common usage, we define some components with specific setting, we can require them without generating them every time. These setting can be overwritten by `props`.
 
 | Component | isLeafNode | bindClickEvent | follow |
 | --------- | ---------- | -------------- | -------- |
@@ -212,14 +212,6 @@ For common usage, we define some components with specific setting, we can requir
 | **I13nButton** | true | true | true |
 | **I13nDiv** | false | false | false |
 
-```js
-var I13nAnchor = require('react-i13n').I13nAnchor
-
-// use a tag like a normal a tag, you can even setup the click event and it will work with the click beacon sending.
-<I13nAnchor href={herf} i13nModel={i13nModel} onClick={someClickHandler}>
-    ... 
-</I13nAnchor>
-```
 
 ### Fire events
 `react-i13n` automatically fire `click` and `updated` events, you can also fire other events via `reactI13n.execute`, just make sure you have proper event handler implemented.

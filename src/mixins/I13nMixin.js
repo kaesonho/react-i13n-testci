@@ -7,7 +7,6 @@ var clickHandler = require('../utils/clickHandler');
 var EventListener = require('react/lib/EventListener');
 var ViewportMixin = require('../vendors/ViewportMixin');
 var DebugDashboard = require('../utils/DebugDashboard');
-var isEmpty = require('lodash').isEmpty;
 require('setimmediate');
 var IS_DEBUG_MODE = isDebugMode();
 
@@ -64,8 +63,8 @@ var I13nMixin = {
      */
     getDefaultProps: function () {
         return {
-            model: {},
-            i13nModel: {}
+            model: null,
+            i13nModel: null
         };
     },
 
@@ -183,8 +182,8 @@ var I13nMixin = {
         var parentI13nNode = self._getParentI13nNode();
         // TODO @kaesonho remove BC for model
         self._i13nNode = new I13nNode(
-            parentI13nNode, 
-            ('function' === typeof self.props.i13nModel || !isEmpty(self.props.i13nModel)) ? self.props.i13nModel : self.props.model,
+            parentI13nNode,
+            self.props.i13nModel || self.props.model, 
             self.isLeafNode(), 
             self._getReactI13n().isViewportEnabled());
     },
