@@ -101,7 +101,7 @@ describe('createI13nNode', function () {
         expect(I13nTestComponent.displayName).to.equal('I13nTestComponent');
         var container = document.createElement('div');
         var component = React.render(React.createElement(I13nTestComponent, {i13nModel: {sec: 'foo'}}), container);
-        expect(rootI13nNode.getChildrenNodes().get(0).getModel()).to.deep.equal({sec: 'foo'});
+        expect(rootI13nNode.getChildrenNodes()[0].getModel()).to.deep.equal({sec: 'foo'});
     });
     
     it('should generate a component with createI13nNode and BC for users passing data as model', function (done) {
@@ -122,7 +122,7 @@ describe('createI13nNode', function () {
         expect(I13nTestComponent.displayName).to.equal('I13nTestComponent');
         var container = document.createElement('div');
         var component = React.render(React.createElement(I13nTestComponent, {model: {sec: 'foo'}}), container);
-        expect(rootI13nNode.getChildrenNodes().get(0).getModel()).to.deep.equal({sec: 'foo'});
+        expect(rootI13nNode.getChildrenNodes()[0].getModel()).to.deep.equal({sec: 'foo'});
     });
 
     it('should generate a component with createI13nNode with statics', function (done) {
@@ -172,9 +172,9 @@ describe('createI13nNode', function () {
         }
         var container = document.createElement('div');
         var component = React.render(React.createElement(I13nTestComponent, {}), container);
-        expect(rootI13nNode.getChildrenNodes().get(0)).to.be.an('object');
+        expect(rootI13nNode.getChildrenNodes()[0]).to.be.an('object');
         React.unmountComponentAtNode(container); // unmount should remove the child from root
-        expect(rootI13nNode.getChildrenNodes().get(0)).to.equal(undefined);
+        expect(rootI13nNode.getChildrenNodes()[0]).to.equal(undefined);
     });
     
     it('should be able to bind click handler', function (done) {
@@ -213,7 +213,7 @@ describe('createI13nNode', function () {
         }
         var container = document.createElement('div');
         var component = React.render(React.createElement(I13nTestComponent, {}), container);
-        expect(rootI13nNode.getChildrenNodes().get(0).isInViewport()).to.equal(false);
+        expect(rootI13nNode.getChildrenNodes()[0].isInViewport()).to.equal(false);
         expect(component).to.be.an('object');
         mockData.reactI13n.execute = function (eventName) {
             // should get a created event
@@ -221,6 +221,6 @@ describe('createI13nNode', function () {
             done();
         }
         mockViewport._handleEnterViewport(); // enter the viewport
-        expect(rootI13nNode.getChildrenNodes().get(0).isInViewport()).to.equal(true);
+        expect(rootI13nNode.getChildrenNodes()[0].isInViewport()).to.equal(true);
     });
 });

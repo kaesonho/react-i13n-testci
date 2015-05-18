@@ -8,7 +8,6 @@
 var debugLib = require('debug');
 var debug = debugLib('ReactI13n');
 var async = require('async');
-var Immutable = require('immutable');
 var EventsQueue = require('./EventsQueue');
 var I13nNode = require('./I13nNode');
 var ENVIRONMENT = (typeof window !== 'undefined') ? 'client' : 'server';
@@ -33,8 +32,8 @@ var ReactI13n = function ReactI13n (options) {
     options = options || {};
     this._i13nNodeClass = 'function' === typeof options.i13nNodeClass ? options.i13nNodeClass : I13nNode;
 
-    this._plugins = Immutable.Map();
-    this._eventsQueues = Immutable.Map();
+    this._plugins = {}
+    this._eventsQueues = {}
     this._isViewportEnabled = options.isViewportEnabled || false;
     this._rootModelData = options.rootModelData || {};
     
@@ -90,8 +89,8 @@ ReactI13n.prototype.plug = function plug (plugin) {
     if (!plugin) {
         return;
     }
-    this._plugins = this._plugins.set(plugin.name, plugin);
-    this._eventsQueues = this._eventsQueues.set(plugin.name, new EventsQueue(plugin));
+    this._plugins[plugin.name] = plugin;
+    this._eventsQueues[plugin.name] = new EventsQueue(plugin);
     debug('setup plugin', plugin);
 };
 
@@ -106,8 +105,9 @@ ReactI13n.prototype.getEventHandlers = function getEventHandlers (eventName, pay
     var self = this;
     var handlers = [];
     if (self._plugins) {
-        self._plugins.map(function getEventHandler (plugin, pluginName) {
-            var eventsQueue = self._eventsQueues.get(pluginName);
+        Object.keys(self._plugins).forEach(function getEventHandler (pluginName) {
+            var plugin = self._plugins[pluginName];
+            var eventsQueue = self._eventsQueues[pluginName];
             var eventHandler = plugin && plugin.eventHandlers && plugin.eventHandlers[eventName];
             if (eventHandler) {
                 handlers.push(function executeEventHandler(asyncCallback) {

@@ -7,8 +7,7 @@
 
 // var debug = require('debug')('I13nNode');
 var EventEmitter = require('eventemitter3').EventEmitter;
-var Immutable = require('immutable');
-var merge = require('lodash/object/merge');
+var objectAssign = require('object-assign');
 var inherits = require('inherits');
 var TAG_PATTERN = /<[^>]*>/g;
 
@@ -31,12 +30,12 @@ var I13nNode = function I13nNode (parentNode, model, isLeafNode, isViewportEnabl
     if ('function' === typeof model) {
         this._model = model;
     } else {
-        this._model = Immutable.fromJS(model) || Immutable.Map(); // immutable
+        this._model = model || {};
     }
     
-    this._childrenNodes = Immutable.List(); // immutable, children nodes
+    this._childrenNodes = []; // children nodes
     this._DOMNode = null; // DOM node of the i13n node, will use setDOMNode to set it in componentDidMount
-    this._customAttributes = Immutable.Map(); // immutable, any custom value want to set in the i13n node, can used to save some status in the handler functions
+    this._customAttributes = {} // any custom value want to set in the i13n node, can used to save some status in the handler functions
 
     // _isLeafNode indicate if it's a leaf node or not, e.g., an anchor or button. it's used to help users to know if they want to handle it for some cases, e.g., when we want to track links
     this._isLeafNode = isLeafNode || false;
@@ -58,7 +57,7 @@ inherits(I13nNode, EventEmitter);
  * @param {Object} childNode the child node
  */
 I13nNode.prototype.appendChildNode = function appendChildNode (childNode) {
-    this._childrenNodes = this._childrenNodes.push(childNode);
+    this._childrenNodes.push(childNode);
     this._isOrderDirty = true;
     this.emit('change');
 };
@@ -66,7 +65,7 @@ I13nNode.prototype.appendChildNode = function appendChildNode (childNode) {
 /**
  * Get the children array
  * @method getChildrenNodes
- * @return {Array} the immutable children array
+ * @return {Array} the children array
  */
 I13nNode.prototype.getChildrenNodes = function getChildrenNodes () {
     return this._childrenNodes;
@@ -79,7 +78,7 @@ I13nNode.prototype.getChildrenNodes = function getChildrenNodes () {
  * @return {Boolean|Number|String|Array|Object} the attribute value
  */
 I13nNode.prototype.getCustomAttribute = function getCustomAttribute (name) {
-    return this._customAttributes.get(name);
+    return this._customAttributes[name];
 };
 
 /**
@@ -98,16 +97,15 @@ I13nNode.prototype.getDOMNode = function getDOMNode () {
  */
 I13nNode.prototype.getMergedModel = function getMergedModel () {
     if (this._parentNode) {
-        var model = this._parentNode.getMergedModel();
-        merge(model, this.getModel());
-        return model;
+        var parentModel = this._parentNode.getMergedModel();
+        return objectAssign({}, parentModel, this.getModel());
     } else {
         return this.getModel();
     }
 };
 
 /**
- * Get plain model object, from either dynamic function or immutable object
+ * Get plain model object, from either dynamic function or plain object
  * @method getModel
  * @return {Object} the plain object model
  */
@@ -116,7 +114,7 @@ I13nNode.prototype.getModel = function getModel () {
     if ('function' === typeof this._model) {
         model = this._model();
     } else {
-        model = this._model.toJS();
+        model = this._model;
     }
     return model;
 };
@@ -212,7 +210,7 @@ I13nNode.prototype.traverseNodes = function traverseNodes (handler) {
  */
 I13nNode.prototype.removeChildNode = function removeChildNode (childNode) {
     var index = this._childrenNodes.indexOf(childNode);
-    this._childrenNodes = this._childrenNodes.splice(index, 1);
+    this._childrenNodes.splice(index, 1);
     this._isOrderDirty = true;
     this.emit('change');
 };
@@ -242,7 +240,7 @@ I13nNode.prototype.setIsInViewport = function setIsInViewport (isInViewport) {
  * @param {Boolean|Number|String|Array|Object} value attribute value, can be any types
  */
 I13nNode.prototype.setCustomAttribute = function setCustomAttribute (name, value) {
-    this._customAttributes = this._customAttributes.set(name, value);
+    this._customAttributes[name] = value;
 };
 
 /**
@@ -251,7 +249,7 @@ I13nNode.prototype.setCustomAttribute = function setCustomAttribute (name, value
  * @param {Boolean} propagate indicate if want to propagate the sorting event to its parent
  */
 I13nNode.prototype.sortChildrenNodes = function sortChildrenNodes (propagate) {
-    this._childrenNodes = this._childrenNodes.sort(function compareChildrenNodes(childA, childB) {
+    this._childrenNodes.sort(function compareChildrenNodes(childA, childB) {
         var domA = childA.getDOMNode();
         var domB = childB.getDOMNode();
         if (domA && domB) {
