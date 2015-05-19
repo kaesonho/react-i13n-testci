@@ -35,7 +35,7 @@ var I13nNode = function I13nNode (parentNode, model, isLeafNode, isViewportEnabl
     
     this._childrenNodes = []; // children nodes
     this._DOMNode = null; // DOM node of the i13n node, will use setDOMNode to set it in componentDidMount
-    this._customAttributes = {} // any custom value want to set in the i13n node, can used to save some status in the handler functions
+    this._customAttributes = {}; // any custom value want to set in the i13n node, can used to save some status in the handler functions
 
     // _isLeafNode indicate if it's a leaf node or not, e.g., an anchor or button. it's used to help users to know if they want to handle it for some cases, e.g., when we want to track links
     this._isLeafNode = isLeafNode || false;

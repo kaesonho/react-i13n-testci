@@ -32,8 +32,8 @@ var ReactI13n = function ReactI13n (options) {
     options = options || {};
     this._i13nNodeClass = 'function' === typeof options.i13nNodeClass ? options.i13nNodeClass : I13nNode;
 
-    this._plugins = {}
-    this._eventsQueues = {}
+    this._plugins = {};
+    this._eventsQueues = {};
     this._isViewportEnabled = options.isViewportEnabled || false;
     this._rootModelData = options.rootModelData || {};
     
