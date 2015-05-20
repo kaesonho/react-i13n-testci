@@ -4,7 +4,7 @@
  */
 /*global window, require */
 /*jslint nomen: true*/
-var postal = require('postal');
+var eventEmitter = require('./EventEmitter');
 
 (function () {
     'use strict';
@@ -13,11 +13,8 @@ var postal = require('postal');
     var deferTimer;
     var THROTTLE = 500;
 
-    sendEvent = function (type) {
-        postal.publish({
-            channel: 'ThrottledEvents',
-            topic: type
-        });
+    sendEvent = function (eventName) {
+        eventEmitter.emit(eventName);
     };
 
     handleEvent = function (e) {

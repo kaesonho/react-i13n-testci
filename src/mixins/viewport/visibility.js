@@ -10,7 +10,7 @@ A wrapper around the Page Visibility API:
 https://developer.mozilla.org/en-US/docs/Web/Guide/User_experience/Using_the_Page_Visibility_API
 */
 'use strict';
-var postal = require('postal');
+var eventEmitter = require('./EventEmitter');
 
 (function () {
     var handleEvent;
@@ -39,12 +39,8 @@ var postal = require('postal');
         return null;
     };
 
-    sendEvent = function (topic, data) {
-        postal.publish({
-            channel: 'DocumentEvents',
-            topic: topic,
-            data: data
-        });
+    sendEvent = function (eventName, data) {
+        eventEmitter.emit(eventName, data);
     };
 
     handleEvent = function () {

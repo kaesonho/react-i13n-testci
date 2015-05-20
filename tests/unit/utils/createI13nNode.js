@@ -53,7 +53,7 @@ describe('createI13nNode', function () {
             ReactTestUtils = require('react/lib/ReactTestUtils');
             
             mockery.registerMock('../libs/ReactI13n', MockReactI13n);
-            mockery.registerMock('../vendors/ViewportMixin', mockViewport);
+            mockery.registerMock('./viewport/ViewportMixin', mockViewport);
             mockery.registerMock('../utils/clickHandler', mockClickHandler);
 
             createI13nNode = require('../../../../dist/utils/createI13nNode');
