@@ -19,22 +19,41 @@ var STATIC_CLONE_BLACK_LIST = [
 
 /**
  * createI13nNode higher order function to create a Component with I13nNode functionality
- * @param {Object} Component the component you want to create a i13nNode 
+ * @param {Object|String} Component the component you want to create a i13nNode 
  * @method createI13nNode
  */
-module.exports = function createI13nNode (Component) {
-    var componentName = Component.displayName || Component.name;
+module.exports = function createI13nNode (Component, options) {
+    var componentName = Component.displayName || Component.name || Component;
     var staticsObject = {};
-    
-    // clone the all the static functions except the black list
-    Object.keys(Component).forEach(function cloneStaticProperty (key) {
-        if (Component.hasOwnProperty(key) && -1 === STATIC_CLONE_BLACK_LIST.indexOf(key)) {
-            staticsObject[key] = Component[key];
-        }   
-    });
+    options = options || {};
+   
+    if ('function' === typeof Component) {
+        // clone the all the static functions except the black list
+        Object.keys(Component).forEach(function cloneStaticProperty (key) {
+            if (Component.hasOwnProperty(key) && -1 === STATIC_CLONE_BLACK_LIST.indexOf(key)) {
+                staticsObject[key] = Component[key];
+            }   
+        });
+    }
 
     var I13nComponent = React.createClass(objectAssign({}, I13nMixin, {statics: staticsObject}, {
         displayName: 'I13n' + componentName,
+
+        /**
+         * getDefaultProps
+         * @method getDefaultProps
+         * @return {Object} default props
+         */
+        getDefaultProps: function () {
+            return {
+                model: options.model || null,
+                i13nModel: options.i13nModel || null,
+                isLeafNode: options.isLeafNode || false,
+                bindClickEvent: options.bindClickEvent || false,
+                follow: options.follow || false
+            };
+        },
+        
         /**
          * render
          * @method render

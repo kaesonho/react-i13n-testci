@@ -13,7 +13,6 @@ module.exports = {
     setupI13n: require('./dist/utils/setupI13n'),
     
     // I13n Components 
-    I13nComponent: require('./dist/components/I13nComponent'),
     I13nAnchor: require('./dist/components/I13nAnchor'),
     I13nButton: require('./dist/components/I13nButton'),
     I13nDiv: require('./dist/components/I13nDiv')

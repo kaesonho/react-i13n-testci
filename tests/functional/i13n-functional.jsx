@@ -62,15 +62,15 @@ var I13nComponentLevel1 = React.createClass({
                 {links}
                 <I13nComponentLevel2Hidden i13nModel={{sec:'hidden'}}/>
                 <I13nComponentLevel2 i13nModel={{sec: 'level2'}}/>
-                <I13nComponent className="NestTestI13nComponentLevel1" i13nModel={{vl1:'foo', vl3_ovr:'foo'}}>
+                <I13nDiv className="NestTestI13nComponentLevel1" i13nModel={{vl1:'foo', vl3_ovr:'foo'}}>
                     <div>
-                        <I13nComponent className="NestTestI13nComponentLevel2" i13nModel={{vl2:'bar'}}>
+                        <I13nDiv className="NestTestI13nComponentLevel2" i13nModel={{vl2:'bar'}}>
                             <div>
                                 <I13nAnchor className="NestTestI13nComponentLevel3" follow={false} i13nModel={{vl3:'baz', vl3_ovr:'baz'}}>NestTestI13nComponentLevel3</I13nAnchor>
                             </div>
-                        </I13nComponent>
+                        </I13nDiv>
                     </div>
-                </I13nComponent>
+                </I13nDiv>
             </div>
         );
     }
