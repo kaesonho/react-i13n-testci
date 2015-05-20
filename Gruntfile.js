@@ -6,12 +6,16 @@ var fs = require('fs');
 var path = require('path');
 
 module.exports = function (grunt) {
+
+    // the env param should be setup with ci tools
+    process.env.SAUCE_USERNAME = 'kaesonho';
+    process.env.SAUCE_ACCESS_KEY = '747d942d-3057-4aeb-b348-31030ae1701c';
+
     // autoload installed tasks
     [
         'grunt-atomizer',
         'grunt-contrib-clean',
         'grunt-contrib-connect',
-        'grunt-contrib-copy',
         'grunt-contrib-jshint',
         'grunt-contrib-watch',
         'grunt-react',
@@ -30,8 +34,6 @@ module.exports = function (grunt) {
             grunt.log.error(moduleTasks + ' could not be found.');
         }
     });
-    
-    grunt.loadTasks('./tasks');
 
     // configurable paths
     var env = process.env;
@@ -74,7 +76,6 @@ module.exports = function (grunt) {
                         src: [
                             '<%= project.functional %>/bundle.js',
                             '<%= project.functional %>/css/atomic.css',
-                            '<%= project.functional %>/es5-*.js',
                             '<%= project.functional %>/console.js',
                             '<%= project.functional %>/*-functional.js'
                         ]
@@ -134,12 +135,6 @@ module.exports = function (grunt) {
         // shell
         // shell commands to run protractor and istanbul
         shell: {
-            protractor: {
-                command: './node_modules/.bin/protractor --baseUrl=<%= baseUrl %> <%= project.functional%>/protractor.conf.js'
-            },
-            protractor_grid: {
-                command: './node_modules/.bin/protractor-batch-runner <%= project.spec %>/protractor-batch-conf.js'
-            }, 
             istanbul: {
                 options: {
                     execOptions: {
@@ -174,16 +169,16 @@ module.exports = function (grunt) {
         connect: {
             functional: {
                 options: {
-                    port: '<%= port %>',
-                    base: ['build', '<%= project.functional %>']
+                    port: 9999,
+                    base: ['<%= project.functional %>', '.']
                 }
             },
             functionalOpen: {
                 options: {
-                    port: 8000,
-                    base: ['build', '<%= project.functional %>'],
+                    port: 9999,
+                    base: ['<%= project.functional %>', '.'],
                     open: {
-                        target: 'http://127.0.0.1:8000/page.html'
+                        target: 'http://127.0.0.1:9999/tests/functional/page.html'
                     }
                 }
             }
@@ -198,27 +193,74 @@ module.exports = function (grunt) {
                 tasks: ['dist', 'functional-debug']
             }
         },
-        copy: {
-            shimsToFunctional: {
-                src: './node_modules/es5-shim/es5-shim.js',
-                dest: '<%= project.functional%>/es5-shim.js'
-            },
-            shamsToFunctional: {
-                src: './node_modules/es5-shim/es5-sham.js',
-                dest: '<%= project.functional%>/es5-sham.js'
-            }
-        },
-        baseurl: {
-            functional: {
-                options: {}
-            }
-        },
-        acquire_selenium: {
-            options: {
-                provider: 'sauce'
+        'saucelabs-mocha': {
+            all: {
+                options: {
+                    testname: 'react-i13n func test',
+                    urls: [
+                        'http://127.0.0.1:9999/tests/functional/page.html'
+                    ],
+
+                    build: process.env.TRAVIS_BUILD_NUMBER,
+                    sauceConfig: {
+                        'record-video': true,
+                        'capture-html': false,
+                        'record-screenshots': false
+                    },
+                    throttled: 3,
+                    browsers: [
+                        {
+                            browserName: 'internet explorer',
+                            platform: 'Windows 7',
+                            version: '8'
+                        },
+                        {
+                            browserName: 'internet explorer',
+                            platform: 'Windows 7',
+                            version: '9'
+                        },
+                        {
+                            browserName: 'internet explorer',
+                            platform: 'Windows 8',
+                            version: '10'
+                        },
+                        {
+                            browserName: 'internet explorer',
+                            platform: 'Windows 8.1',
+                            version: '11'
+                        },
+                        {
+                            browserName: 'chrome',
+                            platform: 'Windows 7',
+                            version: '37'
+                        },
+                        {
+                            browserName: 'firefox',
+                            platform: 'Windows 7',
+                            version: '32'
+                        },
+                        {
+                            browserName: 'iphone',
+                            platform: 'OS X 10.9',
+                            version: '7.1'
+                        },
+                        {
+                            browserName: 'android',
+                            platform: 'Linux',
+                            version: '4.4'
+                        },
+                        {
+                            browserName: 'safari',
+                            platform: 'OS X 10.9',
+                            version: '7'
+                        }
+                    ]
+                }
             }
         }
     });
+
+    grunt.loadNpmTasks('grunt-saucelabs');
 
     // register custom tasks
 
@@ -231,36 +273,21 @@ module.exports = function (grunt) {
     // 7. set up local server to run functional tests
     // 9. run protractor
     grunt.registerTask('functional', [
-        'atomizer-functional',
+        'atomizer:functional',
         'react:functional',
-        'copy',
         'webpack:functional',
-        'baseurl',
         'connect:functional',
-        'shell:protractor',
+        'saucelabs-mocha',
         'clean:functional'
     ]);
 
     // similar to functional, but don't run protractor, just open the test page
     grunt.registerTask('functional-debug', [
-        'atomizer-functional',
+        'atomizer:functional',
         'react:functional',
-        'copy',
         'webpack:functional',
-        'baseurl',
         'connect:functionalOpen',
         'watch:functional'
-    ]);
-    
-    grunt.registerTask('functional-grid', [
-        'atomizer-functional',
-        'react:functional',
-        'copy',
-        'webpack:functional',
-        'baseurl',
-        'connect:functional',
-        'shell:protractor_grid',
-        'clean:functional'
     ]);
 
     // cover
@@ -283,10 +310,6 @@ module.exports = function (grunt) {
         'react:unit',
         'react:dist',
         'shell:mocha'
-    ]);
-
-    grunt.registerTask('atomizer-functional', [
-        'atomizer:functional'
     ]);
 
     // dist
