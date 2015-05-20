@@ -86,13 +86,13 @@ var Viewport = {
     },
 
     subscribeViewportEvents: function () {
-        this.subscribe('ThrottledEvents', 'scroll', this._detectViewport);
-        this.subscribe('DocumentEvents', 'visibilitychange', this._detectHidden);
+        this.subscribe('scroll', this._detectViewport);
+        this.subscribe('visibilitychange', this._detectHidden);
     },
 
     unsubscribeViewportEvents: function () {
-        this.unsubscribe('ThrottledEvents', 'scroll');
-        this.unsubscribe('DocumentEvents', 'visibilitychange');
+        this.unsubscribe('scroll');
+        this.unsubscribe('visibilitychange');
     },
 
     onEnterViewport: function (callback) {

@@ -9,7 +9,7 @@ var React = require('react');
 var ReactI13n = require('../libs/ReactI13n');
 var clickHandler = require('../utils/clickHandler');
 var EventListener = require('react/lib/EventListener');
-var ViewportMixin = require('../vendors/ViewportMixin');
+var ViewportMixin = require('./viewport/ViewportMixin');
 var DebugDashboard = require('../utils/DebugDashboard');
 var isEmpty = require('lodash').isEmpty;
 require('setimmediate');
