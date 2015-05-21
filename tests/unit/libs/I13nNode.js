@@ -93,7 +93,7 @@ describe('I13nNode', function () {
         expect(i13nNodeChild4.getCustomAttribute('traversed')).to.eql(true);
     });
     
-    it('should be handle append child correctly and emit change', function (done) {
+    it('should be handle append child correctly', function () {
         var i13nNodeParent = new I13nNode(null, {psec: 'parent'}, true, false);
         var i13nNodeChild1 = new I13nNode(i13nNodeParent, {sec: 'child'}, true, false);
         var i13nNodeChild2 = new I13nNode(i13nNodeParent, {sec: 'child'}, true, false);
@@ -105,10 +105,6 @@ describe('I13nNode', function () {
             traverseArray.push(child);
         });
         expect(i13nNodeParent.getCustomAttribute('traversed')).to.eql(true);
-        i13nNodeParent.on('change', function handleOnChange() {
-            expect(i13nNodeParent.getChildrenNodes().length).to.eql(4);
-            done();
-        });
         // start to append child, should get on change event and clear the traverse status
         var i13nNodeChild4 = new I13nNode(i13nNodeParent, {sec: 'child'}, true, false);
     });

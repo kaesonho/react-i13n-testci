@@ -6,9 +6,7 @@
 'use strict';
 
 // var debug = require('debug')('I13nNode');
-var EventEmitter = require('eventemitter3').EventEmitter;
 var objectAssign = require('object-assign');
-var inherits = require('inherits');
 var TAG_PATTERN = /<[^>]*>/g;
 
 /**
@@ -49,8 +47,6 @@ var I13nNode = function I13nNode (parentNode, model, isLeafNode, isViewportEnabl
     this._isInViewport = !isViewportEnabled ? true : false;
 };
 
-inherits(I13nNode, EventEmitter);
-
 /**
  * Append a child node
  * @method appendChildNode
@@ -59,7 +55,6 @@ inherits(I13nNode, EventEmitter);
 I13nNode.prototype.appendChildNode = function appendChildNode (childNode) {
     this._childrenNodes.push(childNode);
     this._isOrderDirty = true;
-    this.emit('change');
 };
 
 /**
@@ -212,7 +207,6 @@ I13nNode.prototype.removeChildNode = function removeChildNode (childNode) {
     var index = this._childrenNodes.indexOf(childNode);
     this._childrenNodes.splice(index, 1);
     this._isOrderDirty = true;
-    this.emit('change');
 };
 
 /**
