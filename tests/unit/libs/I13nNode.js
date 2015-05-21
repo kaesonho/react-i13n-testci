@@ -44,9 +44,9 @@ describe('I13nNode', function () {
     it('should be able to append a child and work correctly with model data', function () {
         var i13nNodeParent = new I13nNode(null, {psec: 'parent'}, true, true);
         var i13nNodeChild = new I13nNode(i13nNodeParent, {sec: 'child'}, true, true);
-        expect(i13nNodeParent.getChildrenNodes().count()).to.equal(1);
-        expect(i13nNodeParent.getChildrenNodes().get(0)).to.equal(i13nNodeChild);
-        expect(i13nNodeParent.getChildrenNodes().get(0).getMergedModel()).to.deep.equal({psec: 'parent', sec: 'child'});
+        expect(i13nNodeParent.getChildrenNodes().length).to.equal(1);
+        expect(i13nNodeParent.getChildrenNodes()[0]).to.equal(i13nNodeChild);
+        expect(i13nNodeParent.getChildrenNodes()[0].getMergedModel()).to.deep.equal({psec: 'parent', sec: 'child'});
     });
     
     it('should be able to append a child and work correctly with position', function () {
@@ -64,7 +64,7 @@ describe('I13nNode', function () {
         i13nNodeChild2.setDOMNode(mockDomNode);
         i13nNodeChild3.setDOMNode(mockDomNode);
         i13nNodeChild4.setDOMNode(mockDomNode);
-        expect(i13nNodeParent.getChildrenNodes().count()).to.equal(4);
+        expect(i13nNodeParent.getChildrenNodes().length).to.equal(4);
         // since the mockDomNode always return Node.DOCUMENT_POSITION_PRECEDING, so the order is the same as they insert
         expect(i13nNodeParent.isOrderDirty()).to.equal(true);
         expect(i13nNodeChild1.getPosition()).to.equal(1);
@@ -81,7 +81,7 @@ describe('I13nNode', function () {
         var i13nNodeChild3 = new I13nNode(i13nNodeParent, {sec: 'child'}, true, false);
         var i13nNodeChild4 = new I13nNode(i13nNodeParent, {sec: 'child'}, true, false);
         var traverseArray = [];
-        expect(i13nNodeParent.getChildrenNodes().count()).to.equal(4);
+        expect(i13nNodeParent.getChildrenNodes().length).to.equal(4);
         i13nNodeParent.traverseNodes(function traverseNode(child) {
             child.setCustomAttribute('traversed', true);
             traverseArray.push(child);
@@ -99,14 +99,14 @@ describe('I13nNode', function () {
         var i13nNodeChild2 = new I13nNode(i13nNodeParent, {sec: 'child'}, true, false);
         var i13nNodeChild3 = new I13nNode(i13nNodeParent, {sec: 'child'}, true, false);
         var traverseArray = [];
-        expect(i13nNodeParent.getChildrenNodes().count()).to.equal(3);
+        expect(i13nNodeParent.getChildrenNodes().length).to.equal(3);
         i13nNodeParent.traverseNodes(function traverseNode(child) {
             child.setCustomAttribute('traversed', true);
             traverseArray.push(child);
         });
         expect(i13nNodeParent.getCustomAttribute('traversed')).to.equal(true);
         i13nNodeParent.on('change', function handleOnChange() {
-            expect(i13nNodeParent.getChildrenNodes().count()).to.equal(4);
+            expect(i13nNodeParent.getChildrenNodes().length).to.equal(4);
             done();
         });
         // start to append child, should get on change event and clear the traverse status
@@ -116,7 +116,7 @@ describe('I13nNode', function () {
     it('should remove child correctly', function () {
         var i13nNodeParent = new I13nNode(null, {psec: 'parent'}, true, true);
         var i13nNodeChild = new I13nNode(i13nNodeParent, {sec: 'child'}, true, true);
-        expect(i13nNodeParent.getChildrenNodes().count()).to.equal(1);
+        expect(i13nNodeParent.getChildrenNodes().length).to.equal(1);
         // after getposition, IsOrderDirty should be false
         i13nNodeChild.getPosition();
         expect(i13nNodeParent.isOrderDirty()).to.equal(false);
@@ -125,7 +125,7 @@ describe('I13nNode', function () {
 
         // after remove child, IsOrderDirty is set as true
         expect(i13nNodeParent.isOrderDirty()).to.equal(true);
-        expect(i13nNodeParent.getChildrenNodes().count()).to.equal(0);
+        expect(i13nNodeParent.getChildrenNodes().length).to.equal(0);
     });
     
     it('should be able to get text of the dom node', function () {
