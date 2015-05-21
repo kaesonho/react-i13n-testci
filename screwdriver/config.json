@@ -23,7 +23,7 @@
                     "after": [
                         {
                             "task": "script",
-                            "command": "node ./node_modules/.bin/grunt functional-grid",
+                            "command": "node ./node_modules/.bin/grunt functional",
                             "ignore_errors": false
                         }
                     ]

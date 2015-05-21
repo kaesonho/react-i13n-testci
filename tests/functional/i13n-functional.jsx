@@ -26,8 +26,9 @@ var I13nComponentLevel1 = React.createClass({
             var linkText = 'Button Level1 ' + i;
             var linkSec = 'level1-' + i
             links.push(
-                <div className="P(4px) M(4px) Bgc(#ececec)" key={i}>
-                </div>
+                <I13nButton className="P(4px) M(4px) Bgc(#ececec)" key={i} i13nModel={{sec:linkSec, lv1: 'foo'}}>
+                    {linkText}
+                </I13nButton>
             );
         }
         var getModelData = function () {
@@ -186,7 +187,6 @@ var testPlugin = {
         }
     }
 };
-
 I13nDemo = setupI13n(I13nDemo,
     {
         isViewportEnabled: true,
