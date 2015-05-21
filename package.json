@@ -5,12 +5,11 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git@git.corp.yahoo.com:kaesonho/react-i13n.git#master",
-    "revision": "b2cc03ff1e1d7e8a03ca5b2baaff4225b90d344e"
+    "url": "git@github.com:yahoo/react-i13n.git"
   },
   "scripts": {
     "cover": "grunt cover",
-    "func": "grunt functional",
+    "func": "./test/functional/saucelabs.sh",
     "lint": "jshint",
     "test": "grunt unit"
   },
@@ -58,21 +57,6 @@
     "lint",
     "test"
   ],
-  "yahoo": {
-    "bugzilla": {
-      "product": "Touchdown",
-      "component": "General"
-    },
-    "custodian": {
-      "email": "touchdown@yahoo-inc.com"
-    },
-    "lint": "jshint",
-    "screwdriver": {
-      "project_id": 36725,
-      "project_url": "http://screwdriver.corp.yahoo.com/projects/36725",
-      "build_url": "http://jenkins.screwdriver.corp.yahoo.com:9999/jenkins/job/36725-react-i13n-trunk-component/18/"
-    }
-  },
   "yhint": {
     "excludes": [
       "/dist/",

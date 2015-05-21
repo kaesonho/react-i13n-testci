@@ -1,5 +1,4 @@
 # react-i13n
-[![ynpm](http://ynpm-search.corp.yahoo.com/-/icon/react-i13n/latest)](http://ynpm-search.corp.yahoo.com/-/package/react-i13n) [![Build Status](http://api.screwdriver.corp.yahoo.com:4080/badge/36725/component/icon)](http://api.screwdriver.corp.yahoo.com:4080/badge/36725/component/target)
 
 React I13n provides a performant and scalable approach to instrumentation.
 
@@ -8,14 +7,13 @@ In most cases, you have to manage the `instrumentation model data` you want and 
 Also, if you want to track a link click, you will not have to hook the click event and send out event beacon. We provide React components to handle this for you, all you need to do is define the data model you want to beacon out.
 
 ## Main Ideas
-It's originated from [fastbreak/crossover](https://git.corp.yahoo.com/fastbreak/crossover/blob/master/docs/INSTRUMENTATION.md), ([slide](http://www.slideshare.net/RafaelMartins21/instrumentation-talk-39547608)).
+It's originated from [Rafael Martins](http://www.slideshare.net/RafaelMartins21/instrumentation-talk-39547608).
 
 `react-i13n` utilizes the life cycle events provided by `React` to build an i13n tree that mirrors the React component hierarchy. This approach optimizes for performance by reducing the need to scrape the DOM for data before beaconing.
 
 `react-i13n` is pluggable to integrate any data analytics library into the same tree architecture. All that is needed is to implement the plugin and the handler functions which integrate with the libraries transport functions.
 
 ### I13n Tree
-![Instrumentation Tree](https://git.corp.yahoo.com/github-enterprise-assets/0000/1644/0003/9712/5811235c-f2b1-11e4-9692-becb91d7336d.png)
 * `react-i13n` build the `I13n Tree` with `context` and life cycle event `componentWillMount`, we could define the `i13nModel` data we need. Which means we don't need addtional DOM manipulation when we want to get `i13nModel` values for sending out linkview/click beacon.
 * `i13nModel` could be a plain object or a dynamic function with a proper `i13nModel` object return, which means we could dynamically change `i13nModel` data without causing rerender due to the `props` changes.
 * Whenever we want to get the `i13nModel` for certain node, it traverses back to the root and merge all the `i13nModel` information in the path. Since the tree is already built and we don't need extra DOM access, it should be pretty cheap and efficient. 
@@ -230,17 +228,13 @@ ReactI13n.getInstance().execute('pageview', {payload}, function callback () {
 
 ### Unit
 
-`grunt test`
+`grunt unit`
 
 ### Functional
 
-Locally, via Chrome only:
-
-`grunt functional`
-
-On the selenium grid against a full suite of browsers:
-
-`grunt functional-grid`
-
-### Meeting Notes
-https://git.corp.yahoo.com/gist/kaesonho/292016793f2d7f16e770
+* debug locally:
+   * `grunt functional-debug`
+   * check functional testing result on `http://127.0.0.1:9999/tests/functional/page.html`
+* run functional test on `saucelabs`:
+   * setup [sauce-connect](https://docs.saucelabs.com/reference/sauce-connect/)
+   * `grunt functional`

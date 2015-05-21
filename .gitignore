@@ -1,16 +1,12 @@
 artifacts/
 build/
-protractor-batch-artifacts/
 results/
 coverage/
 node_modules/
-tests/file_server/build/
 tmp/
 dist/
 *.log
 *.tap
 tests/functional/bundle.js
 tests/functional/i13n-functional.js
-tests/functional/es5-*.js
-tests/functional/console.js
 tests/functional/css/

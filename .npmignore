@@ -3,10 +3,8 @@
 /bin/
 /build/
 /coverage/
-/protractor-batch-artifacts/
 /results/
 /src/
-/screwdriver/
 /tests/
 lcov-*
 xunit*
