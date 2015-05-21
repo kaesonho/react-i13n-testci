@@ -5,7 +5,7 @@
 /* globals describe,it,document,beforeEach,afterEach */
 'use strict';
 
-var expect = require('chai').expect;
+var expect = require('expect.js');
 var jsdom = require('jsdom');
 var DebugDashboard;
 var I13nNode = require('../../../../dist/libs/I13nNode');

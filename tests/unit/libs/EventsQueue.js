@@ -6,7 +6,7 @@
 
 'use strict';
 
-var expect = require('chai').expect;
+var expect = require('expect.js');
 var EventsQueue = require('../../../../dist/libs/EventsQueue');
 
 describe('EventsQueue', function () {
@@ -16,9 +16,9 @@ describe('EventsQueue', function () {
             eventHandlers: {}
         };
         var eventsQueue = new EventsQueue(testPlugin);
-        expect(eventsQueue._plugin).to.deep.equal(testPlugin);
-        expect(eventsQueue._pendingCallbacks).to.deep.equal([]);
-        expect(eventsQueue._pendingEventsCount).to.equal(0);
+        expect(eventsQueue._plugin).to.eql(testPlugin);
+        expect(eventsQueue._pendingCallbacks).to.eql([]);
+        expect(eventsQueue._pendingEventsCount).to.eql(0);
     });
     
     it('should execute event correctly', function (done) {
@@ -34,8 +34,8 @@ describe('EventsQueue', function () {
         var eventsQueue = new EventsQueue(testPlugin);
         eventsQueue.executeEvent('click', {}, function eventCallback() {
             // after events are executed, the pending evnets should be empty
-            expect(eventsQueue._pendingCallbacks.length).to.equal(0);
-            expect(eventsQueue._pendingEventsCount).to.equal(0);
+            expect(eventsQueue._pendingCallbacks.length).to.eql(0);
+            expect(eventsQueue._pendingEventsCount).to.eql(0);
             done();
         });
     });
@@ -53,8 +53,8 @@ describe('EventsQueue', function () {
         var eventsQueue = new EventsQueue(testPlugin);
         eventsQueue.executeEvent('click', {}, function eventCallback() {
             // after events are executed, the pending evnets should be empty
-            expect(eventsQueue._pendingCallbacks.length).to.equal(0);
-            expect(eventsQueue._pendingEventsCount).to.equal(0);
+            expect(eventsQueue._pendingCallbacks.length).to.eql(0);
+            expect(eventsQueue._pendingEventsCount).to.eql(0);
             done();
         });
     });
@@ -71,8 +71,8 @@ describe('EventsQueue', function () {
         var eventsQueue = new EventsQueue(testPlugin);
         eventsQueue.executeEvent('pageview', {}, function eventCallback() {
             // after events are executed, the pending evnets should be empty
-            expect(eventsQueue._pendingCallbacks.length).to.equal(0);
-            expect(eventsQueue._pendingEventsCount).to.equal(0);
+            expect(eventsQueue._pendingCallbacks.length).to.eql(0);
+            expect(eventsQueue._pendingEventsCount).to.eql(0);
             done();
         });
     });
@@ -97,14 +97,14 @@ describe('EventsQueue', function () {
         var eventsQueue = new EventsQueue(testPlugin);
         eventsQueue.executeEvent('updated', {}, function eventCallback() {
             // after events are executed, the pending evnets should be empty
-            expect(eventsQueue._pendingCallbacks.length).to.equal(1); // should have callback for click not executed yet
-            expect(eventsQueue._pendingEventsCount).to.equal(0);
+            expect(eventsQueue._pendingCallbacks.length).to.eql(1); // should have callback for click not executed yet
+            expect(eventsQueue._pendingEventsCount).to.eql(0);
             done();
         });
         eventsQueue.executeEvent('click', {}, function eventCallback() {
             // after events are executed, the pending evnets should be empty
-            expect(eventsQueue._pendingCallbacks.length).to.equal(0);
-            expect(eventsQueue._pendingEventsCount).to.equal(0);
+            expect(eventsQueue._pendingCallbacks.length).to.eql(0);
+            expect(eventsQueue._pendingEventsCount).to.eql(0);
         });
     });
 });

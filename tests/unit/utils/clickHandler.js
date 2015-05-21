@@ -5,7 +5,7 @@
 /* globals describe,it,document,beforeEach,afterEach */
 'use strict';
 
-var expect = require('chai').expect;
+var expect = require('expect.js');
 var jsdom = require('jsdom');
 var clickHandler;
 var React;
@@ -66,7 +66,7 @@ describe('clickHandler', function () {
         };
         document.location.assign = function () {
             executedActions.push('assign');
-            expect(executedActions).to.deep.equal(['preventDefault', 'assign']);
+            expect(executedActions).to.eql(['preventDefault', 'assign']);
             done();
         }
         mockComponent._executeI13nEvent = function (eventName, payload, callback) {
@@ -87,7 +87,7 @@ describe('clickHandler', function () {
         mockClickEvent.target.form = {
             submit: function () {
                 executedActions.push('submit');
-                expect(executedActions).to.deep.equal(['preventDefault', 'submit']);
+                expect(executedActions).to.eql(['preventDefault', 'submit']);
                 done();
             }
         }
@@ -110,7 +110,7 @@ describe('clickHandler', function () {
         mockClickEvent.target.form = {
             submit: function () {
                 executedActions.push('submit');
-                expect(executedActions).to.deep.equal(['preventDefault', 'submit']);
+                expect(executedActions).to.eql(['preventDefault', 'submit']);
                 done();
             }
         }
@@ -128,7 +128,7 @@ describe('clickHandler', function () {
             executedActions.push('preventDefault');
         };
         mockComponent._executeI13nEvent = function (eventName, payload, callback) {
-            expect(executedActions).to.deep.equal(['preventDefault']);
+            expect(executedActions).to.eql(['preventDefault']);
             done();
         };
         clickHandler.apply(mockComponent, [mockClickEvent]);
