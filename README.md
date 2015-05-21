@@ -238,3 +238,10 @@ ReactI13n.getInstance().execute('pageview', {payload}, function callback () {
 * run functional test on `saucelabs`:
    * setup [sauce-connect](https://docs.saucelabs.com/reference/sauce-connect/)
    * `grunt functional`
+
+## License
+
+This software is free to use under the Yahoo Inc. BSD license.
+See the [LICENSE file][] for license text and copyright information.
+
+[LICENSE file]: https://github.com/yahoo/react-i13n/blob/master/LICENSE.md

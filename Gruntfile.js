@@ -7,10 +7,6 @@ var path = require('path');
 
 module.exports = function (grunt) {
 
-    // the env param should be setup with ci tools
-    process.env.SAUCE_USERNAME = 'kaesonho';
-    process.env.SAUCE_ACCESS_KEY = '747d942d-3057-4aeb-b348-31030ae1701c';
-
     // autoload installed tasks
     [
         'grunt-atomizer',
@@ -141,7 +137,7 @@ module.exports = function (grunt) {
                         env: env
                     }
                 },
-                command: 'node node_modules/istanbul/lib/cli.js cover --dir <%= project.coverage_dir %> -- ./node_modules/mocha/bin/_mocha <%= project.tmp %>/<%= project.unit %> --recursive --reporter xunit-file'
+                command: 'node node_modules/istanbul/lib/cli.js cover --dir <%= project.coverage_dir %> -- ./node_modules/mocha/bin/_mocha <%= project.tmp %>/<%= project.unit %> --recursive --reporter spec'
             },
             mocha: {
                 command: './node_modules/mocha/bin/mocha <%= project.tmp %>/<%= project.unit %> --recursive --reporter spec'

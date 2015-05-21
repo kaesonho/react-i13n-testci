@@ -184,7 +184,7 @@ var I13nMixin = {
         var self = this;
         var I13nNode = self._getReactI13n().getI13nNodeClass();
         var parentI13nNode = self._getParentI13nNode();
-        // TODO @kaesonho remove BC for model
+        // TODO remove BC for model
         self._i13nNode = new I13nNode(
             parentI13nNode, 
             self.props.i13nModel || self.props.model,
