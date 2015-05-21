@@ -5,7 +5,7 @@
 /* globals describe,it,document,beforeEach,afterEach */
 'use strict';
 
-var expect = require('chai').expect;
+var expect = require('expect.js');
 var jsdom = require('jsdom');
 var mockery = require('mockery');
 var React;
@@ -73,11 +73,11 @@ describe('setupI13n', function () {
 
         // check the initial state is correct after render
         var I13nTestApp = setupI13n(TestApp, mockData.options, [mockData.plugin]);
-        expect(I13nTestApp.displayName).to.equal('RootI13nTestApp');
+        expect(I13nTestApp.displayName).to.eql('RootI13nTestApp');
         var container = document.createElement('div');
         var component = React.render(React.createElement(I13nTestApp, {}), container);
-        expect(mockData.reactI13n._options).to.equal(mockData.options);
-        expect(mockData.reactI13n._plugins[0]).to.equal(mockData.plugin);
+        expect(mockData.reactI13n._options).to.eql(mockData.options);
+        expect(mockData.reactI13n._plugins[0]).to.eql(mockData.plugin);
         expect(mockData.reactI13n._rootI13nNode).to.be.an('object');
         done();
     });

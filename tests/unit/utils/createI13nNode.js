@@ -5,7 +5,7 @@
 /* globals describe,it,document,beforeEach,afterEach */
 'use strict';
 
-var expect = require('chai').expect;
+var expect = require('expect.js');
 var jsdom = require('jsdom');
 var mockery = require('mockery');
 var I13nNode;
@@ -95,13 +95,13 @@ describe('createI13nNode', function () {
         var I13nTestComponent = createI13nNode(TestComponent);
         mockData.reactI13n.execute = function (eventName) {
             // should get a created event
-            expect(eventName).to.equal('created');
+            expect(eventName).to.eql('created');
             done();
         }
-        expect(I13nTestComponent.displayName).to.equal('I13nTestComponent');
+        expect(I13nTestComponent.displayName).to.eql('I13nTestComponent');
         var container = document.createElement('div');
         var component = React.render(React.createElement(I13nTestComponent, {i13nModel: {sec: 'foo'}}), container);
-        expect(rootI13nNode.getChildrenNodes()[0].getModel()).to.deep.equal({sec: 'foo'});
+        expect(rootI13nNode.getChildrenNodes()[0].getModel()).to.eql({sec: 'foo'});
     });
     
     it('should generate a component with createI13nNode and BC for users passing data as model', function (done) {
@@ -116,13 +116,13 @@ describe('createI13nNode', function () {
         var I13nTestComponent = createI13nNode(TestComponent);
         mockData.reactI13n.execute = function (eventName) {
             // should get a created event
-            expect(eventName).to.equal('created');
+            expect(eventName).to.eql('created');
             done();
         }
-        expect(I13nTestComponent.displayName).to.equal('I13nTestComponent');
+        expect(I13nTestComponent.displayName).to.eql('I13nTestComponent');
         var container = document.createElement('div');
         var component = React.render(React.createElement(I13nTestComponent, {model: {sec: 'foo'}}), container);
-        expect(rootI13nNode.getChildrenNodes()[0].getModel()).to.deep.equal({sec: 'foo'});
+        expect(rootI13nNode.getChildrenNodes()[0].getModel()).to.eql({sec: 'foo'});
     });
 
     it('should generate a component with createI13nNode with statics', function (done) {
@@ -138,7 +138,7 @@ describe('createI13nNode', function () {
 
         // check the initial state is correct after render
         var I13nTestComponent = createI13nNode(TestComponent);
-        expect(I13nTestComponent.foo).to.equal('bar');
+        expect(I13nTestComponent.foo).to.eql('bar');
         done();
     });
     
@@ -167,14 +167,14 @@ describe('createI13nNode', function () {
         var I13nTestComponent = createI13nNode(TestComponent);
         mockData.reactI13n.execute = function (eventName) {
             // should get a created event
-            expect(eventName).to.equal('created');
+            expect(eventName).to.eql('created');
             done();
         }
         var container = document.createElement('div');
         var component = React.render(React.createElement(I13nTestComponent, {}), container);
         expect(rootI13nNode.getChildrenNodes()[0]).to.be.an('object');
         React.unmountComponentAtNode(container); // unmount should remove the child from root
-        expect(rootI13nNode.getChildrenNodes()[0]).to.equal(undefined);
+        expect(rootI13nNode.getChildrenNodes()[0]).to.eql(undefined);
     });
     
     it('should be able to bind click handler', function (done) {
@@ -190,7 +190,7 @@ describe('createI13nNode', function () {
         var I13nTestComponent = createI13nNode(TestComponent);
         mockData.reactI13n.execute = function (eventName) {
             // should get a created event
-            expect(eventName).to.equal('created');
+            expect(eventName).to.eql('created');
             done();
         }
         var container = document.createElement('div');
@@ -209,18 +209,18 @@ describe('createI13nNode', function () {
         var I13nTestComponent = createI13nNode(TestComponent);
         mockData.reactI13n.execute = function (eventName) {
             // should get a created event
-            expect(eventName).to.equal('created');
+            expect(eventName).to.eql('created');
         }
         var container = document.createElement('div');
         var component = React.render(React.createElement(I13nTestComponent, {}), container);
-        expect(rootI13nNode.getChildrenNodes()[0].isInViewport()).to.equal(false);
+        expect(rootI13nNode.getChildrenNodes()[0].isInViewport()).to.eql(false);
         expect(component).to.be.an('object');
         mockData.reactI13n.execute = function (eventName) {
             // should get a created event
-            expect(eventName).to.equal('enterViewport');
+            expect(eventName).to.eql('enterViewport');
             done();
         }
         mockViewport._handleEnterViewport(); // enter the viewport
-        expect(rootI13nNode.getChildrenNodes()[0].isInViewport()).to.equal(true);
+        expect(rootI13nNode.getChildrenNodes()[0].isInViewport()).to.eql(true);
     });
 });
