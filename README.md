@@ -1,4 +1,5 @@
 # react-i13n
+[![Sauce Test Status](https://saucelabs.com/buildstatus/react-i13n)](https://saucelabs.com/u/react-i13n)
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/react-i13n.svg)](https://saucelabs.com/u/react-i13n)
 React I13n provides a performant and scalable approach to instrumentation.
 
