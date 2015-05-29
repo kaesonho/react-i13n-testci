@@ -1,5 +1,5 @@
 # react-i13n
-
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/react-i13n.svg)](https://saucelabs.com/u/react-i13n)
 React I13n provides a performant and scalable approach to instrumentation.
 
 In most cases, you have to manage the `instrumentation model data` you want and send out beacons separately, by using `react-i13n`, you have a better way to manage beacons with an inheritance architecture.
